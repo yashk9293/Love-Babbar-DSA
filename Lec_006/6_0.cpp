@@ -28,7 +28,7 @@ int main() {
 
 
 
-
+// Reverse Decimal no. and output it in binary
 
 // #include <iostream>
 // using namespace std;
