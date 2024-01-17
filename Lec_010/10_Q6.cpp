@@ -1,37 +1,45 @@
 // it same homework question no. - 3
-// Question Link :- https://bit.ly/3GbgVs3   - not understood *************
+// Question Link :- https://bit.ly/3GbgVs3
 // Finding Triplets
 
-#include <bits/stdc++.h>
-vector<vector<int>> findTriplets(vector<int> arr, int n, int K) {
+#include <bits/stdc++.h> 
+vector<vector<int>> findTriplets(vector<int>arr, int n, int K) {
+    vector<vector<int>>ans;
     sort(arr.begin(), arr.end());
-    vector<vector<int>> ans;
-    for (int i = 0; i < arr.size() - 2; i++) {
-        if (i == 0 || (i > 0 && arr[i] != arr[i - 1])) {
-            int lol = i + 1;
-            int lmfao = arr.size() - 1;
-            int sum = K - arr[i];
-            while (lol < lmfao) {
-                if (arr[lol] + arr[lmfao] == sum) {
-                    vector<int> temp;
-                    temp.push_back(arr[i]);
-                    temp.push_back(arr[lol]);
-                    temp.push_back(arr[lmfao]);
-                    ans.push_back(temp);
-                    while (lol < lmfao && arr[lol] == arr[lol + 1])
-                        lol++;
 
-                    while (lol > lmfao && arr[lmfao] == arr[lmfao - 1])
-                        lmfao--;
+    for (int i = 0; i < n; i++) {
+        int target = K - arr[i];
+        int front = i + 1;
+        int back = n - 1;
 
-                    lol++;
-                    lmfao--;
-                }
-                else if (arr[lol] + arr[lmfao] < sum)
-                    lol++;
-                else
-                    lmfao--;
+        while (front < back) {
+            int sum = arr[front] + arr[back];
+            // Finding answer which starts from arr[i].
+            if (sum < target) {
+                front++;
             }
+            else if (sum > target) {
+                back--;
+            }
+            else {
+                int x = arr[front];
+                int y = arr[back];
+                ans.push_back({arr[i], arr[front], arr[back]});
+
+                // Incrementing front pointer until we reach a different number.
+                while (front < back && arr[front] == x) {
+                    front++;
+                }
+                // Decrementing last pointer until we reach a different number.
+                while (front < back && arr[back] == y) {
+                    back--;
+                }
+            }
+        }
+
+        // Ensuring that we don't encounter duplicate values for arr[i].
+        while (i + 1 < n && arr[i] == arr[i + 1]) {
+            i++;
         }
     }
     return ans;
