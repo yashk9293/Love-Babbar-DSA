@@ -1,5 +1,5 @@
 // Oestion Link :- https://bit.ly/3Il0c7n
-// Array Interaction
+// Array Intersection
 // array is sorted.
 
 #include <bits/stdc++.h>
