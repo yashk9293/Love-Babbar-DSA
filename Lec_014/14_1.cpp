@@ -3,27 +3,27 @@
 
 class Solution {
 public:
-    int find_pivot(vector<int>& nums, int l, int r) {
-        while(l < r) {
-            int mid = l + (r-l)/2;
-            if(nums[mid] > nums[r]) {
-                l = mid+1;
+    int find_pivot(vector<int>& nums, int s, int e) {
+        while(s < e) {
+            int mid = s + (e-s)/2;
+            if(nums[mid] > nums[e]) {
+                s = mid+1;
             } else {
-                r = mid;
+                e = mid;
             }
         }
-        return r;
+        return e;
     }
     
-    int binary_search(vector<int>& nums, int l, int r, int target) {
-        while(l<=r) {
-            int mid = l + (r-l)/2;
+    int binary_search(vector<int>& nums, int s, int e, int target) {
+        while(s<=e) {
+            int mid = s + (e-s)/2;
             if(nums[mid] == target)
                 return mid;
             if(nums[mid] < target)
-                l = mid+1;
+                s = mid+1;
             else
-                r = mid-1;
+                e = mid-1;
         }
         
         return -1;
@@ -32,7 +32,7 @@ public:
     int search(vector<int>& nums, int target) {
         int n = nums.size();
         int pivot = find_pivot(nums, 0, n-1);
-        
+
         if( target >= nums[pivot] && target <= nums[n-1]) {
         //BS on second line
             return binary_search(nums, pivot, n-1, target);
