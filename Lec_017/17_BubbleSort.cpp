@@ -84,7 +84,7 @@ using namespace std;
 
 
 void bubbleSort(vector<int>& arr, int n) {   
-    for(int i = 1; i<n; i++) {        // or for(int i = 0; i<n-1; i++) 
+    for(int i = 1; i<n; i++) {
 
         for(int j = 0; j<n-i; j++) {  // Note here j is going till (n-i)th index, as in this sort largest value takes their correct place.
             //process element till n-i th index
@@ -99,7 +99,7 @@ void bubbleSort(vector<int>& arr, int n) {
 
 // Optimized Code
 void bubbleSort(vector<int>& arr, int n) {   
-    for(int i = 1; i<n; i++) {        // or for(int i = 0; i<n-1; i++)
+    for(int i = 1; i<n; i++) { 
         //for round 1 to n-1 
         bool swapped = false;
        
