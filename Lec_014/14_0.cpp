@@ -20,7 +20,7 @@ int getPivot(int arr[], int n) {
     int e = n-1;
     int mid = s + (e-s)/2;
     while(s<e) {
-        if(arr[mid] >= arr[0]) {
+        if(arr[mid] > arr[e]) {
             s = mid+1;
         }
         else {
@@ -28,7 +28,7 @@ int getPivot(int arr[], int n) {
         }
         mid = s + (e-s)/2;
     }
-    return s;
+    return e;
 }
 
 int main() {
