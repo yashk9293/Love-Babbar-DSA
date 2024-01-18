@@ -32,16 +32,14 @@ public:
     int search(vector<int>& nums, int target) {
         int n = nums.size();
         int pivot = find_pivot(nums, 0, n-1);
-
-        if(nums[pivot] == target)
-            return pivot;
         
-        int idx = -1;
-        idx = binary_search(nums, 0, pivot-1, target);
-        if(idx != -1) {
-            return idx;
+        if( target >= nums[pivot] && target <= nums[n-1]) {
+        //BS on second line
+            return binary_search(nums, pivot, n-1, target);
         }
-        idx = binary_search(nums, pivot+1, n-1, target);
-        return idx;
+        else { 
+        //BS on first line
+            return binary_search(nums, 0, pivot - 1, target);
+        }
     }
 };
