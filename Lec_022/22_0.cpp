@@ -29,52 +29,96 @@ public:
 // Question Link :- https://bit.ly/3E55FvF 
 // Check Palindrome
 
-#include<iostream> 
-using namespace std;
 
-int getLength(char name[]) {
-    int count = 0;
-    for(int i = 0; name[i] != '\0'; i++) {
-        count++;
-    }
+// Method - 1
+// T.C : O((length(S))
+// S.C : O((length(S))
 
-    return count;
-}
-
-char toLowerCase(char ch) {
-    if(ch >='a' && ch <='z')
-        return ch;
-    else{
-        char temp = ch - 'A' + 'a';
-        return temp;
+void toLowerCase(string &s) {	
+    for (int i = 0; i < s.length(); i++) {
+        char ch = s[i];
+        if (ch <= 'Z' && ch >= 'A') {
+            ch = ch - ('A' - 'a');
+            s[i] = ch;
+        }
     }
 }
 
-bool checkPalindrome(char a[], int n) {
-    int s = 0;
-    int e = n-1;
-    while(s<=e) {
-        if(toLowerCase( a[s] ) != toLowerCase( a[e] ) ) {
-            return 0;       
+string reverseString(string s) {
+    for (int i = 0, j = s.length() - 1; i < j; ++i, --j) {
+        char temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+    return s;
+}
+
+bool checkPalindrome(string s) {	
+    toLowerCase(s);
+    string reversedS = reverseString(s);
+
+    int n = s.length();
+    int i = 0;
+    int j = 0;
+
+    while (i < n && j < n){
+        if (isalnum(s[i]) == 0){  // isalnum() is used to check if the input value is either an alphabet or a number
+            ++i;
+        }
+        else if (isalnum(reversedS[j]) == 0){
+            ++j;
+        }
+        else if (s[i] == reversedS[j]){
+            ++i; 
+            ++j;
         }
         else{
-            s++;
-            e--;
+            return false;
         }
     }
-    return 1;
-}
-int main( ) {
-    char name[20];
-    cout << "Enter your name " << endl;
-    cin >> name;
-    int len = getLength(name);
-    cout <<" Palindrome or Not: " << checkPalindrome(name, len) << endl;
-    return 0;
+    return true;
 }
 
 
 
+
+// Method - 2
+// T.C : O((length(S))
+// S.C : O((1)
+
+void toLowerCase(string &s) {	
+    for (int i = 0; i < s.length(); i++){
+        char ch = s[i];
+
+        if (ch <= 'Z' && ch >= 'A'){
+            ch = ch - ('A' - 'a');
+            s[i] = ch;
+        }
+    }
+}
+
+bool checkPalindrome(string s){	
+    toLowerCase(s);
+
+    int i = 0;
+    int j = s.length() - 1;
+
+    while (i < j){
+        if (isalnum(s[i]) == 0){
+            ++i;
+        }
+        else if (isalnum(s[j]) == 0){
+            --j;
+        }
+        else if (s[i] == s[j]){
+            ++i, --j;
+        }
+        else{
+            return false;
+        }
+    }
+    return true;
+}
 
 
 
