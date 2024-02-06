@@ -1,5 +1,6 @@
 // Question Link :- https://www.codingninjas.com/studio/problems/merge-sort_920442
-// Merge Sort
+// Merge Sort (dividing the array into two half, copy the values in 2 new array, sort them and then add them)
+// Love Babbar
 
 void merge(vector<int> &arr, int s, int e) {
     int mid = (s+e)/2;
