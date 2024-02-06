@@ -1,37 +1,25 @@
-// Question Link :- https://www.geeksforgeeks.org/inversion-count-in-array-using-merge-sort/
-// Inversion count using merge sort  - HARD
-
+// Question Link :- https://www.codingninjas.com/studio/problems/number-of-inversions_6840276
+// Inversion Count (in this ques vector is given) STRIVER
 
 // Naive Approach (Brute force)
-
-#include <bits/stdc++.h>
-using namespace std;
- 
-int getInvCount(int arr[], int n) {
-    int inv_count = 0;
-    for (int i = 0; i < n - 1; i++) {
+// T.C : O(N^2)
+// S.C : O(1)
+int numberOfInversions(vector<int>&a, int n) {
+    int cnt = 0;
+    for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
-            if (arr[i] > arr[j]) {
-                inv_count++;
+            if (a[i] > a[j]) {
+                cnt++;
             }
         }
     }
- 
-    return inv_count;
+    return cnt;
 }
 
-int main() {
-    int arr[] = { 1, 20, 6, 4, 5 };
-    int n = sizeof(arr) / sizeof(arr[0]);
-    cout << " Number of inversions are " << getInvCount(arr, n);
-    return 0;
-}
-
-// Output :-
-// Number of inversions are 5
-
-// Time Complexity: O(N2)
-// Auxiliary Space: O(1), No extra space is required.
+// Input:
+// A = [5, 3, 2, 1, 4], N = 5
+// Output:
+// 7
 
 
 
@@ -39,75 +27,57 @@ int main() {
 
 
 
-// Merge Sort Approach
+// Optimal Solution (Merge Sort)
+// T.C : O(nlogn)
+// S.C : O(n)
+int merge(vector<int> &arr, int low, int mid, int high) {
+    vector<int> temp;      // temporary array
+    int left = low;        // starting index of left half of arr
+    int right = mid + 1;   // starting index of right half of arr
 
-#include <bits/stdc++.h>
-using namespace std;
- 
-int _mergeSort(int arr[], int temp[], int left, int right);
-int merge(int arr[], int temp[], int left, int mid, int right);
- 
-// This function sorts the input array and returns the number of inversions in the array
-int mergeSort(int arr[], int array_size) {
-    int temp[array_size];
-    return _mergeSort(arr, temp, 0, array_size - 1);
-}
- 
-// An auxiliary recursive function that sorts the input array and returns the number of inversions in the array.
-int _mergeSort(int arr[], int temp[], int left, int right) {
-    int mid, inv_count = 0;
-    if (right > left) {
-        // Divide the array into two parts and call _mergeSortAndCountInv() for each of the parts
-        mid = (right + left) / 2;
- 
-        // Inversion count will be sum of inversions in left-part, right-part and number of inversions in merging
-        inv_count += _mergeSort(arr, temp, left, mid);
-        inv_count += _mergeSort(arr, temp, mid + 1, right);
- 
-        // Merge the two parts
-        inv_count += merge(arr, temp, left, mid + 1, right);
-    }
-    return inv_count;
-}
- 
-// This function merges two sorted arrays and returns inversion count in the arrays.
-int merge(int arr[], int temp[], int left, int mid, int right) {
-    int i, j, k;
-    int inv_count = 0;
- 
-    i = left;
-    j = mid;
-    k = left;
-    while ((i <= mid - 1) && (j <= right)) {
-        if (arr[i] <= arr[j]) {
-            temp[k++] = arr[i++];
+    //Modification 1: cnt variable to count the pairs:
+    int cnt = 0;
+
+    while (left <= mid && right <= high) {
+        if (arr[left] <= arr[right]) {
+            temp.push_back(arr[left]);
+            left++;
         }
         else {
-            temp[k++] = arr[j++];
-            // this is tricky -- see above explanation/diagram for merge()
-            inv_count = inv_count + (mid - i);
+            temp.push_back(arr[right]);
+            cnt += (mid - left + 1); //Modification 2
+            right++;
         }
     }
-    // Copy the remaining elements of left subarray (if there are any) to temp
-    while (i <= mid - 1)
-        temp[k++] = arr[i++];
-
-    // Copy the remaining elements of right subarray (if there are any) to temp
-    while (j <= right)
-        temp[k++] = arr[j++];
- 
-    // Copy back the merged elements to original array
-    for (i = left; i <= right; i++)
-        arr[i] = temp[i];
- 
-    return inv_count;
+    // if elements on the left half are still left //
+    while (left <= mid) {
+        temp.push_back(arr[left]);
+        left++;
+    }
+    //  if elements on the right half are still left //
+    while (right <= high) {
+        temp.push_back(arr[right]);
+        right++;
+    }
+    // transfering all elements from temporary to arr //
+    for (int i = low; i <= high; i++) {
+        arr[i] = temp[i - low];
+    }
+    return cnt;    // Modification 3
 }
- 
-// Driver code
-int main() {
-    int arr[] = { 1, 20, 6, 4, 5 };
-    int n = sizeof(arr) / sizeof(arr[0]);
-    int ans = mergeSort(arr, n);
-    cout << " Number of inversions are " << ans;
-    return 0;
+
+int mergeSort(vector<int> &arr, int low, int high) {
+    int cnt = 0;
+    if (low >= high) {
+        return cnt;
+    }
+    int mid = (low + high) / 2 ;
+    cnt += mergeSort(arr, low, mid);  // left half
+    cnt += mergeSort(arr, mid + 1, high); // right half
+    cnt += merge(arr, low, mid, high);  // merging sorted halves
+    return cnt;
+}
+
+int numberOfInversions(vector<int>&a, int n) {
+    return mergeSort(a, 0, n - 1);
 }
