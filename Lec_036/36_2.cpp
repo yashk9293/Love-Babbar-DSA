@@ -3,52 +3,33 @@
 
 #include <bits/stdc++.h> 
 
-int partition( vector<int>& arr, int s, int e) {
-    int pivot = arr[s];
-    int cnt = 0;
-    for(int i = s+1; i<=e; i++) {
-        if(arr[i] <=pivot) {
-            cnt++;
-        }
-    }
-    //place pivot at right position
-    int pivotIndex = s + cnt;
-    swap(arr[pivotIndex], arr[s]);
+int partition(vector<int> &arr, int low, int high) {
+    int pivot = arr[low];
+    int i = low;
+    int j = high;
 
-    //left and right wala part smbhal lete h 
-    int i = s, j = e;
-    while(i < pivotIndex && j > pivotIndex) {
-        while(arr[i] <= pivot) {
+    while (i < j) {
+        while (arr[i] <= pivot && i <= high - 1) {
             i++;
         }
-        while(arr[j] > pivot) {
+        while (arr[j] > pivot && j >= low + 1) {
             j--;
         }
-        if(i < pivotIndex && j > pivotIndex) {
-            swap(arr[i++], arr[j--]);
-        }
+        if (i < j) swap(arr[i], arr[j]);
     }
-    return pivotIndex;
+    swap(arr[low], arr[j]);
+    return j;
 }
 
-void solve(vector<int> &arr, int s, int e) {
-
-    //base case
-    if(s >= e) 
-        return ;
-
-    //partitioon karenfe
-    int p = partition(arr, s, e);
-
-    //left part sort karo
-    solve(arr, s, p-1);
-
-    //right wala part sort karo
-    solve(arr, p+1, e);
+void qs(vector<int> &arr, int low, int high) {
+    if (low < high) {
+        int pIndex = partition(arr, low, high);
+        qs(arr, low, pIndex - 1);
+        qs(arr, pIndex + 1, high);
+    }
 }
 
-vector<int> quickSort(vector<int> arr)
-{
-    solve(arr, 0, arr.size()-1);
+vector<int> quickSort(vector<int> arr) {
+    qs(arr, 0, arr.size() - 1);
     return arr;
 }
