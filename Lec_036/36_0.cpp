@@ -1,69 +1,62 @@
-// QUICK SORT (Recusively Implement) - 
+// QUICK SORT (Recusively Implement) - STRIVER
 
-#include<iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-int partition( int arr[], int s, int e) {
-    int pivot = arr[s];
-    int cnt = 0;
-    for(int i = s+1; i<=e; i++) {
-        if(arr[i] <=pivot) {
-            cnt++;
-        }
-    }
-    //place pivot at right position
-    int pivotIndex = s + cnt;
-    swap(arr[pivotIndex], arr[s]);
+int partition(vector<int> &arr, int low, int high) {
+    int pivot = arr[low];
+    int i = low;
+    int j = high;
 
-    //left and right wala part smbhal lete h 
-    int i = s, j = e;
-    while(i < pivotIndex && j > pivotIndex) {
-        while(arr[i] <= pivot) {
+    while (i < j) {
+        while (arr[i] <= pivot && i <= high - 1) {
             i++;
         }
-        while(arr[j] > pivot) {
+        while (arr[j] > pivot && j >= low + 1) {
             j--;
         }
-        if(i < pivotIndex && j > pivotIndex) {
-            swap(arr[i++], arr[j--]);
-        }
+        if (i < j) swap(arr[i], arr[j]);
     }
-    return pivotIndex;
+    swap(arr[low], arr[j]);
+    return j;
 }
 
-void quickSort(int arr[], int s, int e) {
+void qs(vector<int> &arr, int low, int high) {
+    if (low < high) {
+        int pIndex = partition(arr, low, high);
+        qs(arr, low, pIndex - 1);
+        qs(arr, pIndex + 1, high);
+    }
+}
 
-    //base case
-    if(s >= e) 
-        return ;
-
-    //partitioon karenfe
-    int p = partition(arr, s, e);
-
-    //left part sort karo
-    quickSort(arr, s, p-1);
-
-    //right wala part sort karo
-    quickSort(arr, p+1, e);
+vector<int> quickSort(vector<int> arr) {
+    qs(arr, 0, arr.size() - 1);
+    return arr;
 }
 
 int main() {
-    int arr[10] = {2,4,1,6,9 ,9,9,9,9,9};
-    int n = 10;
-
-    quickSort(arr, 0, n-1);
-
-    for(int i=0; i<n; i++) {
+    vector<int> arr = {4, 6, 2, 5, 7, 9, 1, 3};
+    int n = arr.size();
+    cout << "Before Using quick Sort: " << endl;
+    for (int i = 0; i < n; i++) {
         cout << arr[i] << " ";
-    } 
+    }
     cout << endl;
 
+    arr = quickSort(arr);
+    cout << "After Using quick sort: " << "\n";
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << "\n";
     return 0;
 }
 
-
 // Output :-
-// 1 2 4 6 9 9 9 9 9 9 
+// Before Using quick Sort: 
+// 4 6 2 5 7 9 1 3 
+// After Using quick sort: 
+// 1 2 3 4 5 6 7 9 
 
 
 // Best Case: \omega (N * log N)
