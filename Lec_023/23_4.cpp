@@ -10,30 +10,22 @@
 using namespace std;
 class Solution {
 public:
-    bool searchMatrix(vector<vector<int> >& matrix, int target) {
-        
-        int row = matrix.size();
-        int col = matrix[0].size();
-        
-        int start = 0;
-        int end  = row*col-1;
-        
-        int mid = start + (end-start)/2;    // this is mid element of 1D array
-        
-        while(start<=end) {
-            int element = matrix[mid/col][mid%col];  // to find the mid element of 2D array
-            if(element == target) {
-                return 1;
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+
+        //apply binary search:
+        int low = 0, high = n * m - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int row = mid / m, col = mid % m;
+            if (matrix[row][col] == target) {
+                return true;
             }
-            if(element < target) {
-                start = mid+1;
-            }
-            else {
-                end = mid-1;
-            }
-             mid = start + (end-start)/2;    
+            else if (matrix[row][col] < target) low = mid + 1;
+            else high = mid - 1;
         }
-        return 0;
+        return false;
     }
 };
 
