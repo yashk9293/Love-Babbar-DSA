@@ -9,12 +9,8 @@
 using namespace std;
 
 int gcd(int a, int b) {
-
-    if(a==0)
-    return b;
-
-    if(b==0)
-    return a;
+    if(a==0) return b;
+    if(b==0) return a;
 
     while(a != b) {
         if(a>b) {
@@ -35,3 +31,49 @@ int main() {
     cout << " The GCD of " << a << " & " << b << " is: " << ans << endl;
     return 0;
 }
+
+
+
+
+
+
+
+
+// Question Link - https://leetcode.com/problems/find-greatest-common-divisor-of-array
+
+// Method - 1
+class Solution {
+public:
+    int gcd(int a, int b) {
+        if(a==0) return b;
+        if(b==0) return a;
+
+        return gcd(b, a%b);
+    }
+    int findGCD(vector<int>& nums) {
+        int max= *max_element(nums.begin(),nums.end());
+        int min= *min_element(nums.begin(),nums.end());
+        return gcd(min, max);
+    }
+};
+
+
+
+// Method - 2
+class Solution {
+public:
+    int gcd(int min, int max) {
+        int GCD = 0;
+        for (int i = 1; i <= min; ++i) {
+            if (min % i == 0 && max % i == 0) {
+                GCD = i;
+            }
+        }
+        return GCD;
+    }
+    int findGCD(vector<int>& nums) {
+        int max= *max_element(nums.begin(),nums.end());
+        int min= *min_element(nums.begin(),nums.end());
+        return gcd(min, max);
+    }
+};
