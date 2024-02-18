@@ -4,26 +4,6 @@
 #include<iostream>
 using namespace std;
 
-
-// Method - 1
-
-// bool checkPalindrome(string str, int len) {
-//     static int i = 0;
-//     if(i>=len/2) {
-//         return true;
-//     }
-//     if(str[i]!=str[len-i-1]) {
-//         return false;
-//     }
-//     i++;
-//     return checkPalindrome(str,len);
-// }
-
-
-
-
-// Method - 2
-
 bool checkPalindrome(string &s,int i=0) {
     if(i==s.size()/2) {
         return true;
