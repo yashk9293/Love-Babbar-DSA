@@ -1,7 +1,8 @@
 // Question Link :- https://www.codingninjas.com/studio/problems/permutations-of-a-string_985254
 // Permutation of a String
 
-
+// T.C = O(N! x N)
+// S.C = O(1)
 #include <bits/stdc++.h>
 void solve(string str,int index,vector<string>& ans){  // string is passed by value.
     //base case
