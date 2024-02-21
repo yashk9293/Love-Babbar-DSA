@@ -1,7 +1,8 @@
 // Question Link :- https://leetcode.com/problems/permutations/description/
 // Permutations
 
-
+// T.C = O(N! x N)
+// S.C = O(1)
 class Solution {
     private:
     void solve(vector<int> nums, vector<vector<int>>& ans, int index) {
