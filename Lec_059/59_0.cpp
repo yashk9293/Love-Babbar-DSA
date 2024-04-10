@@ -1,74 +1,71 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/design-a-stack-that-supports-getmin-in-o-1-time-and-o-1-extra-space_842465
-// Design a stack that supports getMin() in O(1) time and O(1) extra space
+// Question Link :- https://leetcode.com/problems/min-stack/
+// Min Stack (Aditya Verma)
 
-// SPECIAL STACK
-
-
-// S.C = O(1)
-#include<stack>
-#include<limits.h>
-class SpecialStack {
-    // Define the data members.
-	stack<int> s;
-    int mini = INT_MAX;
-    /*----------------- Public Functions of SpecialStack -----------------*/
-    public:
-        
-    void push(int data) {
-        //for first element
-        if(s.empty()) {
-            s.push(data);
-            mini = data;
+// Method - 1 (using 2 stacks)
+// T.C = O(1)
+// S.C = O(2n)
+// Cons: Extra O(n) space
+class MinStack {
+private:
+    stack<int> s1;
+    stack<int> s2;
+public:
+    void push(int x) {
+	    s1.push(x);
+	    if (s2.empty() || x <= s2.top()) {
+            s2.push(x);
+        }	    
+    }
+    void pop() {
+        if(s1.size() == 0) {
+            return;
         }
-        else {
-         	if(data < mini) {
-                s.push(2*data - mini);
-                mini = data;
-            }   
-            else {
-                s.push(data);
-            }
+        int a = s1.top();
+        s1.pop();
+	    if (a == s2.top()) {
+            s2.pop();
         }
     }
-
-    int pop() {
-        if(s.empty()){
-            return -1;
-        }
-        int curr = s.top();
-        s.pop();
-        if(curr > mini) {
-            return curr;
-        }
-        else {
-            int prevMin = mini;
-            int val = 2*mini - curr;
-            mini = val;
-            return prevMin;
-        }
-    }
-
     int top() {
-        if(s.empty())
-            return -1;
-        
-        int curr = s.top();
-        if(curr < mini) {
-            return mini;
+	    return s1.top();
+    }
+    int getMin() {
+	    return s2.top();
+    }
+};
+
+
+
+
+// Method - 2 (using 1 stack)
+// T.C = O(1)
+// S.C = O(n)
+class MinStack {
+private:
+    stack<pair<int,int>> st;
+public:
+    MinStack() {
+                
+    }
+    
+    void push(int val) {
+        if (st.empty()) {
+            st.push({val,val});
         }
         else {
-            return curr;
+            st.push({val, min(st.top().second, val)});
         }
     }
-
-    bool isEmpty() {
-        return s.empty();
+    
+    void pop() {
+        st.pop();
     }
-
+    
+    int top() {
+        return st.top().first;
+    }
+    
     int getMin() {
-        if(s.empty())
-            return -1;
-        
-        return mini;
-    }  
+        return st.top().second;
+    }
 };
