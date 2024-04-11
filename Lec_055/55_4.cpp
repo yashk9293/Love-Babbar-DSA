@@ -1,7 +1,9 @@
 // Question Link :- https://www.codingninjas.com/studio/problems/reverse-stack-using-recursion_631875
 // Reverse Stack Using Recursion
 
-// O(N^2)
+// Approach - 1
+// T.C = O(N^2)
+// S.C = O(N)
 void insertAtBottom(stack<int> &s, int element) {
     //basecase
     if(s.empty()) {
@@ -31,3 +33,30 @@ void reverseStack(stack<int> &stack) {
     
     insertAtBottom(stack,num);
 }
+
+
+
+
+
+
+// Approach - 2
+// T.C = O(N^2)
+// S.C = O(N)
+class Solution{
+public:
+    queue<int> ans;
+    void Reverse(stack<int> &St){
+        if(St.empty()) {
+            return;
+        }
+        ans.push(St.top());
+        St.pop();
+
+        Reverse(St);
+        
+        while (!ans.empty()){
+            St.push(ans.front());
+            ans.pop();
+        }
+    }
+};
