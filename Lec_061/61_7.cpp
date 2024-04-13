@@ -10,9 +10,11 @@ void solve(int *arr, int n, int k) {
     deque<int> dq_max, dq_min;
     int sum = 0;
     for (int i = 0; i < n; i++) {
+        // window checking condition for dq_max
         if (!dq_max.empty() && dq_max.front() <= i - k) {
             dq_max.pop_front();
         }
+        // window checking condition for dq_min
         if (!dq_min.empty() && dq_min.front() <= i - k) {
             dq_min.pop_front();
         }
