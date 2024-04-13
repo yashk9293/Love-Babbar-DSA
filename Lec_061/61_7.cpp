@@ -1,65 +1,49 @@
 // Question Link :- https://www.geeksforgeeks.org/sum-minimum-maximum-elements-subarrays-size-k/
 // Sum of minimum and maximum elements of all subarrays of size k.
+// (Extension of Sliding Window Maximum, Leetcode 239)
 
 #include<iostream>
 #include<queue>
 using namespace std;
 
-int solve (int *arr, int n, int k) {
-    deque<int> maxi(k);
-    deque<int> mini(k);
-
-    // Addition of first k size window
-    for(int i=0; i<k; i++) {
-        while (!maxi.empty() && arr[maxi.back()] <= arr[i]) {
-            maxi.pop_back();
+void solve(int *arr, int n, int k) {
+    deque<int> dq_max, dq_min;
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        if (!dq_max.empty() && dq_max.front() <= i - k) {
+            dq_max.pop_front();
         }
-
-        while(!mini.empty() && arr[mini.back()] >= arr[i]) {
-            mini.pop_back();
+        if (!dq_min.empty() && dq_min.front() <= i - k) {
+            dq_min.pop_front();
         }
-        
-        maxi.push_back(i);
-        mini.push_back(i);
+        while (!dq_max.empty() && arr[i] > arr[dq_max.back()]) {
+            dq_max.pop_back();
+        }
+        while (!dq_min.empty() && arr[i] < arr[dq_min.back()]) {
+            dq_min.pop_back();
+        }
+        dq_max.push_back(i);
+        dq_min.push_back(i);
+
+        if (i >= k - 1) {
+            cout << "min = " << arr[dq_min.front()] << " " << "max = " << arr[dq_max.front()] << endl;
+            sum += arr[dq_max.front()] + arr[dq_min.front()];
+        }
     }
-
-    int ans = 0;
-    ans += arr[maxi.front()] + arr[mini.front()];
-    
-
-    for (int i=k; i<n; i++) {
-        // Removal
-        while(!maxi.empty() && i - maxi.front() >= k) {
-            maxi.pop_front();
-        }
-        while(!mini.empty() && i - mini.front() >=k) {
-            mini.pop_front();
-        }
-
-        // Addition (same code of Addition of first k size window)
-        while (!maxi.empty() && arr[maxi.back()] <= arr[i]) {
-            maxi.pop_back();
-        }
-
-        while(!mini.empty() && arr[mini.back()] >= arr[i]) {
-            mini.pop_back();
-        }
-        
-        maxi.push_back(i);
-        mini.push_back(i);
-
-        ans += arr[maxi.front()] + arr[mini.front()];
-    }
-    return ans;
+    cout << "sum is " << sum;
 }
 
 int main() {
     int arr[7] = {2, 5, -1, 7, -3, -1, -2};
     int k = 4;
-    cout << solve(arr, 7, k) <<endl;
+    solve(arr, 7, k);
     return 0;
 }
 
 
 // Output :-
-// 18
+// min = -1 max = 7
+// min = -3 max = 7
+// min = -3 max = 7
+// min = -3 max = 7
+// sum is 18
