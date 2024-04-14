@@ -1,6 +1,9 @@
 // Question Link :- https://practice.geeksforgeeks.org/problems/circular-tour-1587115620/1
+// Question Link :- https://leetcode.com/problems/gas-station
 // Circular tour
 
+// T.C = O(N)
+// S.C = O(1)
 class Solution{
   public:
   
