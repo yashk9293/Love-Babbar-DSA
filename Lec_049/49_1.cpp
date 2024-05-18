@@ -1,77 +1,64 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/merge-two-sorted-linked-lists_800332
-// Merge Two Sorted Linked Lists
+// Question Link :- https://leetcode.com/problems/merge-two-sorted-lists
+// Merge Two Sorted Lists
 
-// Recursive Approach
-Node<int>* sortTwoLists(Node<int>* first, Node<int>* second) {
-    // Write your code here.
-    if(first==NULL)
-        return second;
-    if(second==NULL){
-        return first;
-    }
-    if(first->data < second->data) {
-        first->next = sortTwoLists(first->next, second);
-        return first;
-    }
-    else {
-        second->next = sortTwoLists(first, second->next);
-        return second;
-    }
-}
-
-
-
-
-
-// Love Babbar approach (giving TLE)
-Node<int>* solve(Node<int>* first, Node<int>* second) {
-    
-    // if only 1 element is present in the first list
-    if(first -> next == NULL) {
-        first -> next = second;
-        return first;
-    }
-    
-    Node<int>* curr1 = first;
-    Node<int>* next1 = curr1 -> next;
-    
-    Node<int>* curr2 = second;
-    Node<int>* next2 = curr2 -> next;
-    
-    while(next1 != NULL && curr2 != NULL) {
-        
-        if( (curr2 -> data >= curr1 -> data ) 
-           && ( curr2 -> data <= next1 -> data)) {
-            
-            curr1 -> next = curr2;
-            next2 = curr2 -> next;
-            curr2 -> next = next1;
-            curr1 = curr2;
-            curr2 = next2;
+// codestorywithMIK
+// Approach - 1 (Recursive)
+//T.C : O(n) - total number of nodes
+//S.C : O(1)
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        if(!list1)
+            return list2;
+        if(!list2)
+            return list1;
+        ListNode* result;
+        if(list1->val < list2->val) {
+            result = list1;
+            result->next = mergeTwoLists(list1->next, list2);
+        } else {
+            result = list2;
+            result->next = mergeTwoLists(list1, list2->next);
         }
-        else {
-            curr1 = next1;
-            next1 = next1 -> next;
+        return result;
+    }
+};
 
-            if(next1 == NULL) {
-                curr1 -> next = curr2;
-                return first;
+
+
+
+// Love babbar
+// Approach - 2 (Iterative)
+//T.C : O(n) - total number of nodes
+//S.C : O(1)
+class Solution {
+public:
+    ListNode *mergeTwoLists(ListNode *list1, ListNode *list2) {
+        if (!list1) {
+            return list2;
+        }
+        if (!list2) {
+            return list1;
+        }
+        ListNode *ans = new ListNode(-1);
+        ListNode *temp = ans;
+
+        while (list1 && list2) {
+            if (list1->val < list2->val) {
+                temp->next = list1;
+                temp = list1;
+                list1 = list1->next;
+            } else {
+                temp->next = list2;
+                temp = list2;
+                list2 = list2->next;
             }
         }
+        if (list1 == NULL) {
+            temp->next = list2;
+        } else {
+            temp->next = list1;
+        }
+        return ans->next;
     }
-}
-
-Node<int>* sortTwoLists(Node<int>* first, Node<int>* second) {
-    if(first == NULL)
-        return second;
-    
-    if(second == NULL)
-        return first;
-    
-    if(first -> data <= second -> data ){
-        return solve(first, second);
-    }
-    else {
-        return solve(second, first);
-    }
-}
+};
