@@ -1,77 +1,45 @@
-// Question Link :- https://leetcode.com/problems/merge-two-sorted-lists
-// Merge Two Sorted Lists
+// Question Link :- https://www.geeksforgeeks.org/problems/merge-2-sorted-linked-list-in-reverse-order/1
+// Merge 2 sorted linked list in reverse order
+// (Meaning of Question first merge 2 ll, then reverse the resultant ll)
 
-// APproach - 1 (Runtime - 0ms)
+//T.C : O(n)
+//T.C : O(1) (Ignoring recursion stack space)
 class Solution {
-public:
-    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-    ListNode* dummy = new ListNode(0); // Dummy node
-    ListNode* current = dummy;
-    ListNode* p1 = list1;
-    ListNode* p2 = list2;
+    public:
+    struct Node* mergeTwoLists(Node *list1, Node *list2) {
+        if(list1 == NULL) {
+            return list2;
+        }
+        if(list2 == NULL) {
+            return list1;
+        }
 
-    while (p1 != nullptr && p2 != nullptr) {
-        if (p1->val <= p2->val) {
-            current->next = p1;
-            p1 = p1->next;
+        struct Node* result;
+        if(list1->data < list2->data) {
+            result = list1;
+            result->next = mergeTwoLists(list1->next, list2);
         } else {
-            current->next = p2;
-            p2 = p2->next;
+            result = list2;
+            result->next = mergeTwoLists(list1, list2->next);
         }
-        current = current->next;
+        return result;
     }
+    
+    struct Node* reverseList(struct Node* head) {
+        if(head == NULL || head->next == NULL) {
+            return head;
+        }
+        struct Node* last = reverseList(head->next);  //last = future head
 
-    if (p1 != nullptr) {
-        current->next = p1;
-    }
+        head->next->next = head;
+        head->next = NULL;
 
-    if (p2 != nullptr) {
-        current->next = p2;
+        return last;
     }
-
-    ListNode* mergedList = dummy->next;
-    delete dummy; // Free the dummy node
-    return mergedList;
-    }
+    
+    struct Node * mergeResult(Node *node1,Node *node2) {
+        struct Node* result = mergeTwoLists(node1, node2);
+        result = reverseList(result);
+        return result;
+    }  
 };
-
-
-
-
-
-
-
-// Approach - 2 (Runtime - 8ms)
-ListNode *mergeTwoLists(ListNode *list1, ListNode *list2) {
-    if (!list1)
-        return list2;
-    if (!list2)
-        return list1;
-    ListNode *ans = new ListNode(-1);
-    ListNode *temp = ans;
-
-    while (list1 && list2) {
-        if (list1->val < list2->val) {
-            temp->next = list1;
-            temp = list1;
-            list1 = list1->next;
-        }
-        else {
-            temp->next = list2;
-            temp = list2;
-            list2 = list2->next;
-        }
-    }
-    while (list1) {
-        temp->next = list1;
-        temp = list1;
-        list1 = list1->next;
-    }
-    while (list2) {
-        temp->next = list2;
-        temp = list2;
-        list2 = list2->next;
-    }
-
-    return ans->next;
-}
