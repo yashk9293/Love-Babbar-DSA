@@ -1,8 +1,10 @@
 // Question Link :- https://www.codingninjas.com/studio/problems/middle-of-linked-list_973250
 // Middle Of Linked List
 
-
+// Love babbar
 // Approach - 1
+//T.C : O(2n)
+//S.C : O(1)
 int getLength(Node *head) {
     int len=0;
     while(head != NULL) {
@@ -11,7 +13,6 @@ int getLength(Node *head) {
     }
     return len;
 }
-
 Node *findMiddle(Node *head) {
     int len = getLength(head);
     int ans = (len/2);
@@ -29,33 +30,20 @@ Node *findMiddle(Node *head) {
 
 
 
-
-
-// Approach - 2
-Node *getMiddle(Node* head) {
-    // 1 node or null node
-    if(head == NULL || head -> next == NULL) {
-        return head;
+// codestorywithMIK
+// Approach - 2 (preferred)
+//T.C : O(n)
+//S.C : O(1)
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode* slow  = head;
+        ListNode* fast = head;
+        
+        while(slow && fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+        } 
+        return slow;
     }
-
-    //2 nodes
-    if(head -> next -> next == NULL) {
-        return head -> next;
-    }
-
-    Node* slow = head;
-    Node* fast = head -> next;
-
-    while(fast != NULL) {
-        fast = fast -> next;
-        if(fast != NULL) {
-            fast = fast -> next;
-        }
-        slow = slow -> next;
-    }
-    return slow;
-}
-
-Node *findMiddle(Node *head) {
-    return getMiddle(head);
-}
+};
