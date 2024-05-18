@@ -1,5 +1,5 @@
 // Question Link :- https://www.geeksforgeeks.org/problems/merge-2-sorted-linked-list-in-reverse-order/1
-// Merge 2 sorted linked list in reverse order ((codestorywithMIK)
+// Merge 2 sorted linked list in reverse order (codestorywithMIK)
 // (Meaning of Question first merge 2 ll, then reverse the resultant ll)
 
 //T.C : O(n)
