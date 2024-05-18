@@ -1,5 +1,5 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/middle-of-linked-list_973250
-// Middle Of Linked List
+// Question Link :- https://leetcode.com/problems/middle-of-the-linked-list/description/
+// Middle of the Linked List
 
 // Love babbar
 // Approach - 1
