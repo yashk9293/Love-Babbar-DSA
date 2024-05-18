@@ -1,65 +1,70 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/reverse-the-singly-linked-list_799897
+// Question Link :- https://leetcode.com/problems/reverse-linked-list/
 // Reverse Linked List
 
-
-// Iterative Approach (T.C = O(n))
-LinkedListNode<int> *reverseLinkedList(LinkedListNode<int> *head)  {
-    if(head == NULL || head -> next == NULL) {
-        return head;
+// Iterative Approach (Love Babbar)
+// T.C = O(n)
+// S.C = O(1)
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head == NULL || head -> next == NULL) {
+            return head;
+        }
+        ListNode* curr = head;  
+        ListNode* prev = NULL;
+        ListNode* forward = NULL;
+        while(curr != NULL){  
+            forward = curr->next;  
+            curr->next = prev;  
+            prev = curr;  
+            curr = forward; 
+        }
+        return prev;  
     }
+};
 
-    LinkedListNode<int>* prev = NULL;
-    LinkedListNode<int>* curr = head;
-    LinkedListNode<int>* forward = NULL;
 
-    while(curr != NULL) {
-        forward = curr -> next;
-        curr -> next = prev;
-        prev = curr;
-        curr = forward;
+// codestorywithMIK
+// Recursive Approach - 1 (Preferred)
+// T.C = O(n)
+// S.C = O(1) (Ignoring recursion stack space)
+class Solution {
+public:
+    ListNode* reverseSolve(ListNode* head) {
+        if(!head || !head->next) {
+            return head;
+        }
+        ListNode* last   = reverseSolve(head->next);
+        head->next->next = head;
+        head->next       = NULL;
+            
+        return last;
     }
-    return prev;
-}
-
-
-
-// Recursive Approach - 1 (T.C = O(n))
-void reverse(LinkedListNode<int>* &head, LinkedListNode<int>* curr, LinkedListNode<int>* prev) {
-    // base case
-    if(curr == NULL) {
-        head = prev;
-        return;
+    
+    ListNode* reverseList(ListNode* head) {
+        return reverseSolve(head);
     }
-
-    LinkedListNode<int>* forward = curr -> next;
-    reverse(head, forward, curr);
-    curr -> next = prev;
-}
-
-LinkedListNode<int> *reverseLinkedList(LinkedListNode<int> *head) {
-    LinkedListNode<int>* curr = head;
-    LinkedListNode<int>* prev = NULL;
-    reverse(head, curr, prev);
-    return head;
-}
+};
 
 
 
-
-// Recursive Approach - 2 (T.C = O(n))
-void reverse1(LinkedListNode<int>* &head, LinkedListNode<int>* curr, LinkedListNode<int>* prev) {
-    // base case
-    if(head == NULL || head -> next == NULL) {
-        return head;
+// codestorywithMIK
+// Recursive Approach - 2
+// T.C = O(n)
+// S.C = O(1) (Ignoring recursion stack space)
+class Solution {
+public:
+    ListNode* reverseHelp(ListNode* head, ListNode* prev) {
+        if(!head) {
+            return prev;
+        }
+        ListNode* temp = head->next;
+        head->next = prev;
+        
+        return reverseHelp(temp, head);
     }
-    LinkedListNode<int>* chotaHead = reverse1(head -> next);
-
-    head -> next -> next = head;
-    head -> next = NULL;
-
-    return chotaHead;
-}
-
-LinkedListNode<int> *reverseLinkedList(LinkedListNode<int> *head) {
-    return reverse1(head);
-}
+    
+    ListNode* reverseList(ListNode* head) {
+        return reverseHelp(head, NULL);
+    }
+};
