@@ -1,6 +1,8 @@
 // Question Link :- https://leetcode.com/problems/reverse-nodes-in-k-group
 // Reverse Nodes in k-Group
 
+// T.C = O(n)
+// S.C = O(n)
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
