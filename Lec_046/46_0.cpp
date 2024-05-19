@@ -1,6 +1,8 @@
 // Question Link :- https://www.codingninjas.com/studio/problems/reverse-list-in-k-groups_983644
 // Reverse List In K Groups
 
+// T.C = O(n)
+// S.C = O(n)
 Node* kReverse(Node* head, int k) {
     int size = 0;
     Node* temp = head;
