@@ -1,28 +1,21 @@
 // Question Link :- https://bit.ly/3rSdTDo
 // Detect and Remove Loop (good question)
 
-
-// Floyd Detection (slow fast pointer)
 // T.C = O(n)
 // S.C = O(1)
 Node* floydDetectLoop(Node* head) {
-    if(head == NULL)
+    if(head == NULL) {
         return NULL;
-
+    }
     Node* slow = head;
     Node* fast = head;
-
-    while(slow != NULL && fast != NULL) {
-        fast = fast -> next;
-        if(fast != NULL) {
-            fast = fast -> next;
-        }
-        slow = slow -> next;
-
+    while(slow && fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
         if(slow == fast) {
             return slow;
         }
-    }
+    } 
     return NULL;
 }
 
@@ -43,17 +36,15 @@ Node* getStartingNode(Node* head) {
     return slow;
 }
 
-
-
 Node *removeLoop(Node *head) {
-    if( head == NULL)
+    if( head == NULL) {
         return NULL;
-
+    }
     Node* startOfLoop = getStartingNode(head);
     
-    if(startOfLoop == NULL)
+    if(startOfLoop == NULL) {
         return head;
-    
+    }
     Node* temp = startOfLoop;
 
     while(temp -> next != startOfLoop) {
