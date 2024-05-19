@@ -42,13 +42,12 @@ bool isCircular(Node *head) {
     visited[head] = true;
     Node *temp = head->next;
 
-    while (temp != NULL && temp != head) {
+    while (temp != NULL) {
+        if (visited[temp]) {
+            return true;
+        }
         visited[temp] = true;
         temp = temp->next;
     }
-    if (visited[temp]) {
-        return true;
-    } else {
-        return false;
-    }
+    return false;
 }
