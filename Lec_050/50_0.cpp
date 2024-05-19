@@ -1,5 +1,5 @@
-// Question Link :- https://practice.geeksforgeeks.org/problems/check-if-linked-list-is-pallindrome/1
-// Check if Linked List is Palindrome
+// Question Link :- https://leetcode.com/problems/palindrome-linked-list/
+// Palindrome Linked List
 
 /* Approach - 1
 1. create an array
@@ -18,7 +18,6 @@ class Solution{
         int n = arr.size();
         int s = 0;
         int e = n-1;
-        
         while(s <= e) {
             if(arr[s] != arr[e]) {
                 return 0;
@@ -31,13 +30,13 @@ class Solution{
 
     public:
     //Function to check whether the list is palindrome.
-    bool isPalindrome(Node *head) {
+    bool isPalindrome(ListNode *head) {
         vector<int> arr;
         
-        Node* temp = head;
+        ListNode* temp = head;
         
         while(temp != NULL) {
-            arr.push_back(temp -> data);
+            arr.push_back(temp -> val);
             temp = temp -> next;
         }
         return checkPalindrome(arr);
@@ -47,66 +46,91 @@ class Solution{
 
 
 
-// Approach - 2
+
+
+// Approach - 2 (Reversing the 2nd half of linked list)
+// T.C = O(n)
+// S.C = O(1)
 class Solution {
   private:
-    Node* getMid(Node* head ) {
-        Node* slow = head;
-        Node* fast = head -> next;
+    ListNode* reverseList(ListNode* head) {
+        if(!head || !head->next) {
+            return head;
+        }
+        ListNode* last = reverseList(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return last;            // starting node of reversed linked list
+    }
+
+    public:
+    //Function to check whether the list is palindrome.
+    bool isPalindrome(ListNode *head) {
+        if(head == NULL || head -> next == NULL) {
+            return true;
+        }
         
+        //step 1 -> find Middle
+        ListNode* slow = head;
+        ListNode* fast = head -> next;
         while(fast != NULL && fast-> next != NULL) {
             fast = fast -> next -> next;
             slow = slow -> next;
         }
         
-        return slow;
-    }
-    Node* reverse(Node* head) {
-        
-        Node* curr = head;
-        Node* prev = NULL;
-        Node* next = NULL;
-        
-        while(curr != NULL) {
-            next = curr -> next;
-            curr -> next = prev;
-            prev = curr;
-            curr = next;
-        }
-        return prev;
-    }
-
-    public:
-    //Function to check whether the list is palindrome.
-    bool isPalindrome(Node *head) {
-        if(head -> next == NULL) {
-            return true;
-        }
-        
-        //step 1 -> find Middle
-        Node* middle = getMid(head);
-        //cout << "Middle " << middle->data << endl;
-        
         //step2 -> reverse List after Middle
-        Node* temp = middle -> next;
-        middle -> next = reverse(temp);
+        ListNode* temp = slow -> next;
+        slow -> next = reverseList(temp);
         
-        //step3 - Compare both halves
-        Node* head1 = head;
-        Node* head2 = middle -> next;
+        //step3 - Compare both halves of the linked list
+        ListNode* head1 = head;
+        ListNode* head2 = slow ->next;
         
-        while(head2 != NULL) {
-            if(head2->data != head1->data) {
-                return 0;
+        while(head1 != NULL && head2 != NULL) {
+            if(head1->val != head2->val) {
+                return false;
             }
-            head1 = head1 -> next;
-            head2 = head2 -> next;
+            head1 = head1->next;
+            head2 = head2->next;
         }
     
-        //step4 - repeat step 2
-        temp = middle -> next;
-        middle -> next = reverse(temp);
+        //step4 - repeat step 2 (to avoid any changes to original linked list)
+        temp = slow -> next;
+        slow -> next = reverseList(temp);
         
         return true;
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+// Approach - 3 (Follow Up Question)
+// T.C = O(n)
+// S.C = O(1) auxiliary space
+class Solution {
+public:
+    ListNode* curr;
+    bool solve(ListNode* head) {
+        if(head == NULL) {
+            return true;
+        }
+        bool ans = solve(head->next);
+        if(curr->val != head->val) {
+            return false;
+        }
+        curr = curr->next;
+        return ans;
+    }
+    bool isPalindrome(ListNode* head) {
+        curr = head;
+        return solve(head);
     }
 };
