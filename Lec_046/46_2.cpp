@@ -1,7 +1,8 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/circularly-linked_1070232
-// Circularly Linked
+// Question Link :- https://www.geeksforgeeks.org/problems/circular-linked-list/1
+// Check If Circular Linked List
 
-// correct solution but giving TLE in some test cases
+// T.C = O(n)
+// S.C = O(1)
 bool isCircular(Node* head){
     //empty list
     if(head == NULL) {
@@ -20,49 +21,34 @@ bool isCircular(Node* head){
     return false;
 }
 
+/*
+ _________              ________
+ |_3_|___|-->       :-->|_3_|___|--:
+                    :______________:
+not circlular           circlular
 
-
-
-// Fastest successfully submitted solution
-bool isCircular(Node* head) {
-    if(head==NULL) {
-        return true;
-    }
-    Node* prev = head;
-    Node* temp = head->next;
-    while(temp != NULL && temp!= head) {
-        prev->next=NULL;
-        prev=temp;
-        temp = temp->next;
-    }
-    if(temp == NULL) {
-        return false;
-    }
-    else {
-        return true;;
-    }
-}
-
+*/
 
 
 
 // Map Approach
+// T.C = O(n)
+// S.C = O(n)
 bool isCircular(Node *head) {
     if (head == NULL) {
         return true;
     }
-    unordered_map<Node *, bool> m;
-    m[head] = true;
+    unordered_map<Node *, bool> visited;
+    visited[head] = true;
     Node *temp = head->next;
 
     while (temp != NULL && temp != head) {
-        m[temp] = true;
+        visited[temp] = true;
         temp = temp->next;
     }
-    if (m[temp]) {
+    if (visited[temp]) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
