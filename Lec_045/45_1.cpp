@@ -1,8 +1,7 @@
 // Question Link :- https://leetcode.com/problems/middle-of-the-linked-list/description/
 // Middle of the Linked List
 
-// Love babbar
-// Approach - 1
+// Approach - 1 (Brute Force)
 //T.C : O(2n)
 //S.C : O(1)
 int getLength(Node *head) {
@@ -31,7 +30,7 @@ Node *findMiddle(Node *head) {
 
 
 // codestorywithMIK
-// Approach - 2 (preferred)
+// Approach - 2 (preferred) [Tortoise Hare Method]
 //T.C : O(n)
 //S.C : O(1)
 class Solution {
