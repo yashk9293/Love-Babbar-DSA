@@ -1,102 +1,51 @@
-// Question Link :- https://bit.ly/3rSdTDo
-// Detect and Remove Loop (good question)
+// Question Link :- https://leetcode.com/problems/linked-list-cycle/
+// Linked List Cycle
 
-// Detect Loop
+
+// Using Map
 // T.C = O(n)
 // S.C = O(n)
-// bool detectLoop(Node* head) {
-//     if(head == NULL)
-//         return false;
+bool detectLoop(Node* head) {
+    if(head == NULL) {
+        return false;
+    }
+    map<Node*, bool> visited;
 
-//     map<Node*, bool> visited;
+    Node* temp = head;
 
-//     Node* temp = head;
-
-//     while(temp !=NULL) {
-//         //cycle is present
-//         if(visited[temp] == true) {
-//             cout << "Present on element " << temp->data << endl;
-//             return true;
-//         }
-
-//         visited[temp] = true;
-//         temp = temp -> next;
-//     }
-//     return false;
-// }
-
+    while(temp !=NULL) {
+        //cycle is present
+        if(visited[temp] == true) {
+            cout << "Present on element " << temp->data << endl;
+            return true;
+        }
+        visited[temp] = true;
+        temp = temp -> next;
+    }
+    return false;
+}
 
 
 
 
 
-// Floyd Detection
+// Floyd Detection (slow fast pointer) - preferred
 // T.C = O(n)
 // S.C = O(1)
-Node* floydDetectLoop(Node* head) {
-
-    if(head == NULL)
-        return NULL;
-
-    Node* slow = head;
-    Node* fast = head;
-
-    while(slow != NULL && fast !=NULL) {
-        
-        fast = fast -> next;
-        if(fast != NULL) {
-            fast = fast -> next;
-        }
-        slow = slow -> next;
-
-        if(slow == fast) {
-            return slow;
-        }
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(slow && fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow == fast) {
+                return true;
+            }
+        } 
+        return false;
     }
-    return NULL;
-}
+};
 
-
-
-
-
-
-Node* getStartingNode(Node* head) {
-
-    if(head == NULL) 
-        return NULL;
-
-    Node* intersection = floydDetectLoop(head);
-    
-    if(intersection == NULL)
-        return NULL;
-    
-    Node* slow = head;
-
-    while(slow != intersection) {
-        slow = slow -> next;
-        intersection = intersection -> next;
-    }  
-    return slow;
-}
-
-
-
-Node *removeLoop(Node *head) {
-    if( head == NULL)
-        return NULL;
-
-    Node* startOfLoop = getStartingNode(head);
-    
-    if(startOfLoop == NULL)
-        return head;
-    
-    Node* temp = startOfLoop;
-
-    while(temp -> next != startOfLoop) {
-        temp = temp -> next;
-    } 
-
-    temp -> next = NULL;
-    return head;
-}
+// This above code just tells whether the cycle is present or not
