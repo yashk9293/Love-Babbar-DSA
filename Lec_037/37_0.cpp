@@ -1,39 +1,32 @@
 // Question Link :- https://leetcode.com/problems/subsets/
 // Subsets
 
+// T.C = O(2^n)
+// S.C = O(2^n*length of each subset) to store each subset
+// The recursion stack space complexity is O(N) , the maximum depth of the recursion is N
 class Solution {
-private:
-    void solve(vector<int> nums, vector<int> output, int index, vector<vector<int> >& ans) {
-        //base case
-        if(index >= nums.size()) {
+    private:
+    void solve(vector<int>& nums, int i, vector<vector<int>>& ans, vector<int> output) {
+        // base case
+        if(i>=nums.size()) {
             ans.push_back(output);
-            return ;
+            return;
         }
-        
-        //exclude
-        solve(nums, output, index+1, ans);
-        
-        //include
-        int element = nums[index];
-        output.push_back(element);
-        solve(nums, output, index+1, ans);
-        
+        // exclude
+        solve(nums, i+1, ans, output);
+
+        // include
+        output.push_back(nums[i]);
+        solve(nums, i+1, ans, output);
     }
-    
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
-        
-        vector<vector<int> > ans;
+        vector<vector<int>> ans;
         vector<int> output;
-        int index = 0;
-        solve(nums, output, index, ans);
+        solve(nums, 0, ans, output);
         return ans;
-        
     }
 };
-
-
-
 
 
 // Input: nums = [1,2,3]
