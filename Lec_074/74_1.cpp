@@ -1,13 +1,14 @@
 // Question Link :- https://www.codingninjas.com/studio/problems/build-min-heap_1171167
 // Build Min Heap
 
+// T.C = O(n)
 #include <bits/stdc++.h> 
 void heapify(vector<int>& arr, int n, int i) {
     int smallest = i;
     int left = 2*i + 1;
     int right = 2*i + 2;
 
-    if(left < n && arr[smallest] > arr[left]) {
+    if(left < n && arr[smallest] > arr[left]) {    // here left < n, because we are considering 0-based indexing
         smallest = left;
     }       
     if(right < n && arr[smallest] > arr[right]) {
