@@ -22,7 +22,8 @@ class Heap {
             size = 0;
         }
         void insert(int val) {
-            int index = ++size;
+            size += 1;
+            int index = size;
             arr[index] = val;
 
             while(index > 1) {
@@ -66,42 +67,8 @@ class Heap {
         //     }
         // }
 
-        // Method - 1
-        void deleteHeap() {
-            if(size == 0) {
-                cout << "Heap is empty!" << endl;
-                return;
-            }
-
-            arr[1] = arr[size];
-            size--;
-
-            int i = 1;
-            while(i < size) {
-                int leftChild = 2*i;
-                int rightChild = (2*i) + 1;
-                int largest = i;
-
-                if(leftChild <= size && arr[largest] < arr[leftChild]) {
-                    largest = leftChild;
-                }
-                
-                if(rightChild <= size && arr[largest] < arr[rightChild]) {
-                    largest = rightChild;
-                }
-
-                if(largest == i) {
-                    return;
-                } 
-                else {
-                    swap(arr[i], arr[largest]);
-                    i = largest;
-                }
-            }
-        }
-
-        // Method - 2
-        void deleteFromHeap(){
+        
+        void deleteHeap(){
             if(size==0){
                 cout<<"Nothing to Delete";
                 return;
@@ -140,6 +107,10 @@ class Heap {
             cout << endl;
         }
 };
+
+
+// (n/2 + 1) -> n tak leaf node hota hai in "complete binary tree"
+
 
 void heapify(int arr[], int n, int i) {    // --> O(n)
     int largest = i;
@@ -190,3 +161,10 @@ int main() {
 
     return 0;
 }
+
+
+
+// Output :-
+// Max Heap : 70 55 60 30 40 50 20 
+// Max Heap : 60 55 50 30 40 20 
+// Heapified array : 55 53 54 52 50 
