@@ -1,5 +1,5 @@
 // Question Link :- https://practice.geeksforgeeks.org/problems/kth-smallest-element5635/1
-// Kth smallest element
+// Kth smallest element (codestorywithMIK - Lec 12)
 
 // Approach - 1
 // T.C = O(nlogn)
@@ -14,18 +14,14 @@ class Solution{
     // r : ending index of the array i.e size-1
     // k : find kth smallest element and return using this function
     int kthSmallest(int arr[], int l, int r, int k) {
-        priority_queue<int> Heap;
-        for(int i =0; i<k; i++) {
-            Heap.push(arr[i]);
-        }
-        
-        for(int i=k; i<=r; i++) {
-            if(arr[i]<Heap.top()) {
-                Heap.pop();
-                Heap.push(arr[i]);
+        priority_queue<int> maxHeap;
+        for(int i=l; i<=r; i++) {
+            maxHeap.push(arr[i]);
+            if(maxHeap.size() > k) {
+                maxHeap.pop();
             }
         }
-        return Heap.top();
+        return maxHeap.top();
     }
 };
 
