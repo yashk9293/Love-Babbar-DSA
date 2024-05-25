@@ -71,65 +71,48 @@ int kSorted(vector<vector<int>> &a, int k, int n) {
 
 
 
+// Question link :- https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists
+// Smallest Range Covering Elements from K Lists
+
+
+// Rohit Negi
 // Approach - 3
 // T.C = O(N*K*log(K))
 // S.C = O(K)
-#include<bits/stdc++.h>
-class node {
-    public:
-    int data;
-    int row, col;
+class Solution {
+public:
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> minHeap;
+        int minimum;
+        int maximum = INT_MIN;
+        // calculating minimum and maximum for first K elements
+        for(int i=0; i<nums.size(); i++) {
+            minHeap.push(make_pair(nums[i][0], make_pair(i,0)));
+            maximum = max(maximum, nums[i][0]);
+        }
+        minimum = minHeap.top().first;
+        // creating ans vector
+        vector<int> ans(2);
+        ans[0] = minimum;
+        ans[1] = maximum;
+        // Now traversing the lists
+        while(minHeap.size() == nums.size()) {
+            pair<int, pair<int, int>> curr = minHeap.top();
+            minHeap.pop();
+            int element = curr.first;
+            int i = curr.second.first;
+            int j = curr.second.second;
+            if(j+1 < nums[i].size()) {
+                minHeap.push({nums[i][j+1], {i, j+1}});
+                maximum = max(maximum, nums[i][j+1]);
+                minimum = minHeap.top().first;
 
-    node(int val, int i, int j) {
-        data = val;
-        row = i;
-        col = j;
+                if(maximum-minimum < ans[1]-ans[0]) {
+                    ans[0] = minimum;
+                    ans[1] = maximum;
+                }
+            }
+        }
+        return ans;
     }
 };
-
-class compare {
-    public:
-    bool operator() (node* a, node*b) {
-        return a->data > b-> data;
-    }
-};
-
-int kSorted(vector<vector<int>> &a, int k, int n) {
-    priority_queue<node*, vector<node*>, compare> minHeap;
-    int mini = INT_MAX;
-    int maxi = INT_MIN;
-
-    // Step 1 : Creating a Min Heap for starting element of each list and tracking mini/maxi value of each list
-    for(int i=0; i<k; i++) {
-        int element = a[i][0];
-        mini = min(mini, element);
-        maxi = max(maxi, element);
-        minHeap.push(new node(element, i, 0));
-    }
-
-    int start = mini;
-    int end = maxi;
-
-    // Step 2 : process ranges
-    while(!minHeap.empty()) {
-        // fetching minimum element
-        node* temp = minHeap.top();
-        minHeap.pop();
-        mini = temp->data;
-
-        // range or answer updation
-        if(maxi - mini < end - start) {
-            start = mini;
-            end = maxi;
-        }
-        // checking whether next element exists or not
-        if(temp->col+1 < n) {
-            maxi = max(maxi, a[temp->row][temp->col+1]);
-            minHeap.push(new node(a[temp->row][temp->col+1], temp->row, temp-> col+1));
-        }
-        else {
-            break;
-        }
-    }
-    return (end-start)+1;
-}
