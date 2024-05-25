@@ -33,7 +33,6 @@ class Solution{
         for(int i = a.size()/2 - 1; i >= 0; i--) {
             heapify(a, i, a.size());
         }
-        
         return a;
     }
 };
