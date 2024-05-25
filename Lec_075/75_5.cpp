@@ -20,7 +20,8 @@ void preorderFill(BinaryTreeNode* root, int &index, vector<int> &ans) {
 	if(root==NULL) {
 		return;
 	}
-	root->data=ans[index++];
+	root->data=ans[index];
+	index++;
 	preorderFill(root->left, index, ans);
 	preorderFill(root->right, index, ans);
 }
