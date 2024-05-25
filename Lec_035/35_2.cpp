@@ -1,71 +1,64 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/merge-sort_920442
-// Merge Sort (dividing the array into two half, copy the values in 2 new array, sort them and then add them)
-// Love Babbar
+// Question Link :-  https://www.codingninjas.com/studio/problems/count-inversions_615
+// Count Inversions (in this ques arr[] is given) STRIVER
 
-void merge(vector<int> &arr, int s, int e) {
-    int mid = (s+e)/2;
+// Optimal Solution (Merge Sort)
+// T.C : O(nlogn)
+// S.C : O(n)
 
-    int len1 = mid - s + 1;
-    int len2 = e - mid;
+long long merge(long long arr[], int low, int mid, int high){
+    int left = low, right = mid+1, k = 0;
+    int temp[(high - low + 1)];
 
-    int *first = new int[len1];
-    int *second = new int[len2];
+    //Modification 1: cnt variable to count the pairs:
+    long long invCount = 0;
 
-    //copy values
-    int mainArrayIndex = s;
-    for(int i=0; i<len1; i++) {
-        first[i] = arr[mainArrayIndex++];
-    }
-
-    mainArrayIndex = mid+1;
-    for(int i=0; i<len2; i++) {
-        second[i] = arr[mainArrayIndex++];
-    }
-
-    //merge 2 sorted arrays     
-    int index1 = 0;
-    int index2 = 0;
-    mainArrayIndex = s;
-
-    while(index1 < len1 && index2 < len2) {
-        if(first[index1] < second[index2]) {
-            arr[mainArrayIndex++] = first[index1++];
+    while ((left <= mid) && (right <= high)){
+        if (arr[left] <= arr[right]){
+            temp[k] = arr[left];
+            ++k;
+            ++left;
         }
         else{
-            arr[mainArrayIndex++] = second[index2++];
+            temp[k] = arr[right];
+            invCount += (mid - left + 1); //Modification 2
+            ++k;
+            ++right;
         }
-    }   
-
-    while(index1 < len1) {
-        arr[mainArrayIndex++] = first[index1++];
     }
 
-    while(index2 < len2 ) {
-        arr[mainArrayIndex++] = second[index2++];
+    // if elements on the left half are still left //
+    while (left <= mid){
+        temp[k] = arr[left];
+        ++k;
+        ++left;
     }
 
-    delete []first;
-    delete []second;
+    // if elements on the right half are still left //
+    while (right <= high){
+        temp[k] = arr[right];
+        ++k;
+        ++right;
+    }
+
+    // transfering all elements from temporary to arr //
+    for (left = low, k = 0; left <= high; left++, k++){
+        arr[left] = temp[k];
+    }
+    return invCount;   // Modification 3
 }
 
-void solve(vector<int> &arr, int s, int e) {
-    //base case
-    if(s >= e) {
-        return;
+long long mergeSort(long long arr[], int low, int high){
+    long long invCount = 0;
+    if (low >= high){
+        return invCount;
     }
-    int mid = (s+e)/2;
-
-    //left part sort karna h 
-    solve(arr, s, mid);
-    
-    //right part sort karna h 
-    solve(arr, mid+1, e);
-
-    //merge
-    merge(arr, s, e);
-
+    int mid = (low + high) / 2;
+    invCount += mergeSort(arr, low, mid);
+    invCount += mergeSort(arr, mid + 1, high);
+    invCount += merge(arr, low, mid, high);
+    return invCount;
 }
 
-void mergeSort(vector < int > & arr, int n) {
-    solve(arr, 0, n-1);
+long long getInversions(long long arr[], int n){
+    return mergeSort(arr, 0, n - 1);
 }
