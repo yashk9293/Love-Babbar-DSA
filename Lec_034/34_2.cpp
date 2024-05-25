@@ -1,32 +1,9 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/reverse-the-string_799927
-// Reverse the String
-
-void reverse(string& str, int i, int j) {
-	if(i>j) {
-		return;
-	}
-	swap(str[i], str[j]);
-	i++;
-	j--;
-
-	reverse(str, i, j);
-}
-
-
-string reverseString(string str) {
-	reverse(str, 0, str.length()-1);
-	return str;
-}
-
-
-
-
-
-
-
 // Question Link - https://leetcode.com/problems/reverse-string/
+// Reverse String
 
 // Using Recursion
+// T.C = O(n)
+// S.C = O(n)
 class Solution {
 public:
     void reverse(vector<char> &s, int i, int j) {
@@ -47,12 +24,14 @@ public:
 
 
 // Best Approach is using 2 pointer
+// T.C = O(n)
+// S.C = O(1)
 class Solution {
 public:
     void reverseString(vector<char>& s) {
         int end=s.size()-1;
         int start=0;
-        while(start<s.size()/2){
+        while(start < s.size()/2){
             swap(s[start], s[end]);
             start++;
             end--;
