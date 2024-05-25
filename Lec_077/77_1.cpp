@@ -1,5 +1,5 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/median-in-a-stream_975268
-// Median in a stream
+// Question Link :- https://leetcode.com/problems/find-median-from-data-stream/
+// Find Median from Data Stream
 
 // Approach - 1 (naive approach)
 // step 1 : sort the array using insertion sort - O(n^2)
@@ -12,74 +12,33 @@
 
 
 // Approach - 2
-// T.C = O(n logn)
-// S.C = O(n)
-#include<bits/stdc++.h>
-int signum(int a, int b) {
-    return (a==b) ? 0 : (a>b ? 1 : -1);
-}
+// T.C = O(logN)
+//    Constructor: O(1)
+//    addNum: O(logN)
+//    findMedian: O(1)
+// S.C = O(N)
 
-// int signum(int a, int b) {
-//     if(a==b) {
-//         return 0;
-//     }
-//     else if(a>b) {
-//         return 1;
-//     }
-//     else {
-//         return -1;
-//     }
-// }
-
-void callMedian(int element, priority_queue<int> &maxHeap, priority_queue<int, vector<int>, greater<int> > &minHeap, int &median) {
-    switch(signum(maxHeap.size(), minHeap.size())) {
-        case 0 :
-            if(element > median) {
-                minHeap.push(element);
-                median = minHeap.top();
-            } 
-            else {
-                maxHeap.push(element);
-                median = maxHeap.top();
-            }
-            break;
-
-        case 1 : 
-            if(element > median) {
-                minHeap.push(element);
-            } 
-            else {
-                minHeap.push(maxHeap.top());
-                maxHeap.pop();
-                maxHeap.push(element);
-            }
-            median = (minHeap.top() + maxHeap.top()) / 2;
-            break;
-        
-        case -1 :
-            if(element > median) {
-                maxHeap.push(minHeap.top());
-                minHeap.pop();
-                minHeap.push(element);
-            } 
-            else {
-                maxHeap.push(element);
-            }
-            median = (minHeap.top() + maxHeap.top()) / 2;
-            break;
+class MedianFinder {
+public:
+    priority_queue<int> left_maxHeap;
+    priority_queue<int, vector<int>, greater<int>> right_minHeap;
+    
+    MedianFinder() {
     }
-}
-
-vector<int> findMedian(vector<int>& arr, int n) {
-    vector<int> ans;
-    priority_queue<int> maxHeap;
-    priority_queue<int, vector<int>, greater<int> > minHeap;
-
-    int median = 0;
-
-    for(int i=0; i<n; i++) {
-        callMedian(arr[i], maxHeap, minHeap, median);
-        ans.push_back(median);
+    void addNum(int num) {
+        left_maxHeap.push(num);
+        right_minHeap.push(left_maxHeap.top());
+        left_maxHeap.pop();
+        if (right_minHeap.size() > left_maxHeap.size()) {
+            left_maxHeap.push(right_minHeap.top());
+            right_minHeap.pop();
+        }
     }
-    return ans;
-}
+    double findMedian() {
+        if (left_maxHeap.size() > right_minHeap.size()) {
+            return left_maxHeap.top();
+        }
+        return (left_maxHeap.top() + right_minHeap.top()) / 2.0;
+        // return (double)(left_maxHeap.top()+right_minHeap.top())/2;
+    }
+};
