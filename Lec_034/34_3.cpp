@@ -12,9 +12,8 @@ bool checkPalindrome(string str, int i, int  j) {
     }
     if(str[i] != str[j]) {
         return false;
-    } else{
-        return checkPalindrome(str, i+1, j-1);
     }
+    return checkPalindrome(str, i+1, j-1);
 }
 
 int main() {
