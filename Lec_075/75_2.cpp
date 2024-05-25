@@ -9,7 +9,6 @@ class Solution {
         if(root == NULL) {
             return 0;
         }
-
         int left = countNodes(root->left);
         int right = countNodes(root->right);
 
@@ -20,11 +19,9 @@ class Solution {
         if(root == NULL) {
             return true;
         }
-
         if(index >= cnt) {
             return false;
         }
-
         bool left = isCBT(root->left, 2*index + 1, cnt);
         bool right = isCBT(root->right, 2*index + 2, cnt);
 
@@ -57,8 +54,7 @@ class Solution {
         int totalCount = countNodes(tree);
         if(isCBT(tree, index, totalCount) && isMaxOrder(tree)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
