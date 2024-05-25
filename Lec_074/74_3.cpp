@@ -1,53 +1,76 @@
-// Max and Min Heap By Priority Queue
+// Question Link :- https://leetcode.com/problems/sort-an-array/
+// Sort an Array
 
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    priority_queue<int> maxHeap;
-    maxHeap.push(52);
-    maxHeap.push(50);
-    maxHeap.push(54);
-    maxHeap.push(40);
-    maxHeap.push(35);
-    maxHeap.push(65);
-    cout << "Top element : " << maxHeap.top() << endl;
-    maxHeap.pop();
-    cout << "Top element : " << maxHeap.top() << endl;
-    maxHeap.pop();
-    maxHeap.pop();
-    cout << "Top element : " << maxHeap.top() << endl;
-    if(maxHeap.empty()) {
-        cout << "Max Heap is empty!" << endl;
+// Love babbar
+// Approach - 1 (Heap Sort)
+// T.C = O(nlogn)
+// S.C = O(n)
+class Solution {
+public:
+    void heapify(vector<int>& arr, int n, int i){
+        int largest = i;
+        int l = 2*i + 1;
+        int r = 2*i + 2;
+        if(l < n and arr[l] > arr[largest]){
+            largest = l;
+        }
+        if(r < n and arr[r] > arr[largest]){
+            largest = r;
+        }
+        if(largest != i){
+            swap(arr[i],arr[largest]);
+            heapify(arr,n,largest);
+        }
     }
-
-    priority_queue<int, vector<int>, greater<int> > minHeap;
-    minHeap.push(52);
-    minHeap.push(50);
-    minHeap.push(54);
-    minHeap.push(40);
-    minHeap.push(35);
-    minHeap.push(65);
-    cout << "\nTop element : " << minHeap.top() << endl;
-    minHeap.pop();
-    cout << "Top element : " << minHeap.top() << endl;
-    minHeap.pop();
-    minHeap.pop();
-    cout << "Top element : " << minHeap.top() << endl;
-    if(minHeap.empty()) {
-        cout << "Min Heap is empty!" << endl;
+    
+    void buildHeap(vector<int>& arr, int n){
+        for(int i=n/2-1; i>=0; i--){
+            heapify(arr, n, i);
+        }
     }
+    
+    vector<int> sortArray(vector<int>& arr) {
+        int n = arr.size();
+        buildHeap(arr, n);
+        while(n > 0) {
+            swap(arr[0], arr[n-1]);
+            n--;
+            heapify(arr, n, 0);
+        }
+        return arr;
+    }
+};
 
-    return 0;
-}
 
 
 
-// Output :-
-// Top element : 65
-// Top element : 54
-// Top element : 50
-
-// Top element : 35
-// Top element : 40
-// Top element : 52
+// codestorywithMIK
+// Approach - 2 (Counting Sort)
+// T.C = O(n+k)
+// S.C = O(n)
+class Solution {
+public:
+    vector<int> sortArray(vector<int>& nums) {
+        int minE = *min_element(begin(nums), end(nums));
+        int maxE = *max_element(begin(nums), end(nums));
+        
+        unordered_map<int, int> mp;
+        
+        for(int &num : nums)
+            mp[num]++;
+        
+        int i = 0;
+        
+        for(int num = minE; num <= maxE; num++) {
+            
+            while(mp[num] > 0) {
+                nums[i] = num;
+                i++;
+                mp[num]--;
+            }
+            
+        }
+        
+        return nums;
+    }
+};
