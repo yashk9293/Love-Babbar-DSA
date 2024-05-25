@@ -1,21 +1,19 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/count-ways-to-reach-nth-stairs_798650
-// Count Ways To Reach The N-th Stairs
+// Question Link :- https://www.geeksforgeeks.org/problems/count-ways-to-reach-the-nth-stair-1587115620/1
+// Count ways to reach the n'th stair
 
-// giving TLE in 2 testcases because, the above program will be solved by dp which takes less time
+// giving TLE because, the above program will be solved by dp which takes less time
 // as compared to recursion.
 
-#include <bits/stdc++.h> 
-int countDistinctWays(int nStairs) {
-    // base case
-    if(nStairs < 0)
-        return 0;
+class Solution {
+    public:
+    int countWays(int nStairs) {
+        // base case
+        if(nStairs==0 || nStairs==1) {
+            return 1;
+        }
+        // Recursive call
+        int ans = countWays(nStairs-1) + countWays(nStairs-2);
     
-    if(nStairs == 0)
-        return 1;
-    
-    // Recursive call
-    int ans = countDistinctWays(nStairs-1)
-        + countDistinctWays(nStairs-2);
-    
-    return ans;
-}
+        return ans;
+    }
+};
