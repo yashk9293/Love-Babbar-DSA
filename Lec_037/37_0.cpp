@@ -1,8 +1,8 @@
 // Question Link :- https://leetcode.com/problems/subsets/
-// Subsets
+// Subsets (Power Set, i.e., subsequence)
 
 // T.C = O(2^n)
-// S.C = O(2^n*length of each subset) to store each subset
+// S.C = O(n) to store each subset
 // The recursion stack space complexity is O(N) , the maximum depth of the recursion is N
 class Solution {
     private:
@@ -27,6 +27,8 @@ public:
         return ans;
     }
 };
+
+
 
 
 // Input: nums = [1,2,3]
