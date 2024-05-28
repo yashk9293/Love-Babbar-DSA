@@ -5,8 +5,8 @@
 // i)  Each row is sorted in non-decreasing order.
 // ii) The first integer of each row is greater than the last integer of the previous row.
 
-// Approach - 1 (Brute Force)
-// T.C = O(m*n)
+// Approach - 1 (same code as Search a 2D matrix II)
+// T.C = O(m+n)
 // S.C = O(1)
 class Solution {
 public:
@@ -19,10 +19,10 @@ public:
             if(matrix[i][j] == target) {
                 return true;
             }
-            if(matrix[i][j] > target) {
-                j--;
-            } else if(matrix[i][j] < target) {
+            if(matrix[i][j] < target) {
                 i++;
+            } else if(matrix[i][j] > target) {
+                j--;
             }
         }
         return false;
