@@ -5,9 +5,38 @@
 // i)  Each row is sorted in non-decreasing order.
 // ii) The first integer of each row is greater than the last integer of the previous row.
 
-#include<iostream>
-#include<vector>
-using namespace std;
+// Approach - 1 (Brute Force)
+// T.C = O(m*n)
+// S.C = O(1)
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+        int i = 0;
+        int j = n-1;
+        while(i < m && j >= 0) {
+            if(matrix[i][j] == target) {
+                return true;
+            }
+            if(matrix[i][j] > target) {
+                j--;
+            } else if(matrix[i][j] < target) {
+                i++;
+            }
+        }
+        return false;
+    }
+};
+
+
+
+
+
+
+// Approach - 2
+// T.C = O(log(m*n))
+// S.C = O(1)
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
@@ -22,8 +51,12 @@ public:
             if (matrix[row][col] == target) {
                 return true;
             }
-            else if (matrix[row][col] < target) low = mid + 1;
-            else high = mid - 1;
+            else if (matrix[row][col] < target) {
+                low = mid + 1;
+            }
+            else {
+                high = mid - 1;
+            }
         }
         return false;
     }
