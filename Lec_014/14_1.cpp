@@ -3,43 +3,44 @@
 
 class Solution {
 public:
-    int find_pivot(vector<int>& nums, int s, int e) {
-        while(s < e) {
-            int mid = s + (e-s)/2;
-            if(nums[mid] > nums[e]) {
-                s = mid+1;
+    int find_pivot(vector<int>& nums, int l, int r) {
+        while(l < r) {
+            int mid = l + (r-l)/2;
+            if(nums[mid] > nums[r]) {
+                l = mid+1;
             } else {
-                e = mid;
+                r = mid;
             }
         }
-        return e;
+        return r;
     }
     
-    int binary_search(vector<int>& nums, int s, int e, int target) {
-        while(s<=e) {
-            int mid = s + (e-s)/2;
-            if(nums[mid] == target)
+    int binary_search(vector<int>& nums, int l, int r, int target) {
+        while(l<=r) {
+            int mid = l + (r-l)/2;
+            if(nums[mid] == target) {
                 return mid;
-            if(nums[mid] < target)
-                s = mid+1;
-            else
-                e = mid-1;
+            }
+            if(nums[mid] < target) {
+                l = mid+1;
+            }
+            else {
+                r = mid-1;
+            }
         }
-        
         return -1;
     }
     
     int search(vector<int>& nums, int target) {
         int n = nums.size();
         int pivot = find_pivot(nums, 0, n-1);
-
-        if( target >= nums[pivot] && target <= nums[n-1]) {
-        //BS on second line
-            return binary_search(nums, pivot, n-1, target);
+        if(nums[pivot] == target) {
+            return pivot;
         }
-        else { 
-        //BS on first line
-            return binary_search(nums, 0, pivot - 1, target);
+        if( target >= nums[pivot] && target <= nums[n-1]) {
+            return binary_search(nums, pivot, n-1, target);   //BS on second line
+        } else { 
+            return binary_search(nums, 0, pivot - 1, target);  //BS on first line
         }
     }
 };
