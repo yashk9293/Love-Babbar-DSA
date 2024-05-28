@@ -1,67 +1,80 @@
-// Question Link :- https://bit.ly/3Ioexjh 
-// First and last occurence of an Element In Sorted Array
+// Question Link :- https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+// Find First and Last Position of Element in Sorted Array
 
-#include<vector>
-using namespace std;
-int firstOcc(vector<int>& arr, int n, int key) {
-    int s = 0, e = n-1;
-    int mid = s + (e-s)/2;
-    int ans = -1;
-    while(s<=e) {
-        if(arr[mid] == key){
-            ans = mid;
-            e = mid - 1;
+// Approach - 1 (Binary Search)
+// T.C = O(logn)
+// S.C = O(1)
+class Solution {
+public:
+    int firstOcc(vector<int>& nums, int target) {
+        int l = 0, r = nums.size()-1;
+        int ans = -1;
+        while(l <= r) {
+            int mid = l + (r-l)/2;
+            if(nums[mid] == target) {
+                ans = mid;
+                r = mid-1;
+            }
+            else if(nums[mid] > target) {
+                r = mid-1;
+            }
+            else if(nums[mid] < target) {
+                l = mid+1;
+            }
         }
-        else if(key > arr[mid]) {//Right me jao
-            s = mid + 1;
-        }
-        else if(key < arr[mid]) {//left me jao
-            e = mid - 1;
-        }
-        mid = s + (e-s)/2;
+        return ans;
     }
-    return ans;
-}
-
-int lastOcc(vector<int>& arr, int n, int key) {
-    int s = 0, e = n-1;
-    int mid = s + (e-s)/2;
-    int ans = -1;
-    while(s<=e) {
-        if(arr[mid] == key){
-            ans = mid;
-            s = mid + 1;
+    
+    int lastOcc(vector<int>& nums, int target) {
+        int l = 0, r = nums.size()-1;
+        int ans = -1;
+        while(l <= r) {
+            int mid = l + (r-l)/2;
+            if(nums[mid] == target) {
+                ans = mid; //possibly my answer
+                l = mid+1;   //but lets look at right more
+            }
+            else if(nums[mid] > target) {
+                r = mid-1;
+            }
+            else if(nums[mid] < target) {
+                l = mid+1;
+            }
         }
-        else if(key > arr[mid]) {        //Right me jao
-            s = mid + 1;
-        }
-        else if(key < arr[mid]) {        //left me jao
-            e = mid - 1;
-        }
-        mid = s + (e-s)/2;
+        return ans;
     }
-    return ans;
-}
 
-pair<int, int> firstAndLastPosition(vector<int>& arr, int n, int k) {
-    pair<int,int> p;
-    p.first = firstOcc(arr, n, k);
-    p.second = lastOcc(arr, n, k);
-    return p;
-}
-
-
-// Input :-
-// 2
-// 6 3
-// 0 5 5 6 6 6
-// 8 2
-// 0 0 1 1 2 2 2 2
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int l = firstOcc(nums, target);
+        int r = lastOcc(nums, target);
+        
+        return {l, r};
+    }
+};
 
 
-// Output :-
-// -1 -1 
-// 4 7
+
+
+
+
+// Approach - 2 (Using STL)
+// T.C = O(logn)
+// S.C = O(1)
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int l = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
+        int r = lower_bound(nums.begin(), nums.end(), target + 1) - nums.begin();
+        if (l == r) {
+            return {-1, -1};
+        }
+        return {l, r - 1};
+    }
+};
+
+
+
+
 
 
 
@@ -81,13 +94,11 @@ pair<int, int> firstAndLastPosition(vector<int>& arr, int n, int k) {
 int first = firstOccurence(arr, n, key);
 int last = lastOccurence(arr, n, key);
 int total_no_of_occurences;
-if(first == -1 && last == -1)  
+if(first == -1 && last == -1) { 
 // Element not found in array. This -1 is nothing but, ans = -1 that we took for finding first and last occurences
-{
     total_no_of_occurences = 0;
 }
-else
-{
+else {
     total_no_of_occurences = (last - first) + 1;
 }
 cout << total_no_of_occurences << endl;
