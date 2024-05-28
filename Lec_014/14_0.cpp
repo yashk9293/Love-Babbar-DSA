@@ -39,25 +39,3 @@ int main() {
 
 // Output :-
 // Pivot is 3
-
-
-
-
-
-
-// ---------------------- Method - 2 ------------------------
-int getpivot(int arr[],int n){
-    int s = 0;
-    int e = n-1;
-    int mid = s + (e-s)/2;
-    while(s<e){
-        if(arr[mid]<arr[n-1]){
-            e = mid;
-        }
-        else if(arr[mid]>arr[n-1]){
-            s = mid + 1;
-        }
-        mid = s + (e-s)/2;
-    }
-    return s;
-}
