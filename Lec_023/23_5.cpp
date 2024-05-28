@@ -1,31 +1,25 @@
 // Question Link :- https://leetcode.com/problems/search-a-2d-matrix-ii/
 // Search in a 2D Matrix II
 
-#include<iostream>
-#include<vector>
-using namespace std;
+// T.C = O(m+n)
+// S.C = O(1)
 class Solution {
 public:
     bool searchMatrix(vector<vector<int> >& matrix, int target) {
-        
-        int row = matrix.size();
-        int col = matrix[0].size();
-        
-        int rowIndex = 0;
-        int colIndex = col-1;
-        
-        while(rowIndex < row && colIndex>=0 ) {
-            int element = matrix[rowIndex][colIndex];
-            if(element == target) {
-                return 1;
+        int m = matrix.size();
+        int n = matrix[0].size();
+        int i = 0;
+        int j = n-1;
+        while(i < m && j>=0 ) {
+            if(matrix[i][j] == target) {
+                return true;
             }
-            if(element < target){
-                rowIndex++;
-            }
-            else {
-                colIndex--;
+            if(matrix[i][j] < target){
+                i++;
+            } else if(matrix[i][j] > target) {
+                j--;
             }
         }
-        return 0;
+        return false;
     }
 };
