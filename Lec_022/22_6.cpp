@@ -1,7 +1,46 @@
 // Question Link :- https://leetcode.com/problems/string-compression/   (medium)
-// String Compression 
-// https://youtu.be/I7drewKcN1Y
+// String Compression (codestorywithMIK)
 
+// Run-length encoding (RLE) - string compression method
+
+
+
+// Brute Force - using extra space
+// Time Complexity: O(N)
+// Space Complexity: O(N)
+class Solution {
+public:
+    int compress(vector<char> &chars) {
+        int n = chars.size();
+        string result = "";
+        for (int i = 0; i < n; i++) {
+            if (i+1 < n && chars[i] == chars[i+1]) {
+                char ch = chars[i];
+                int count = 1;
+                while (i+1 < n && chars[i] == chars[i+1]) {
+                    i++;
+                    count++;
+                }
+                result += chars[i] + to_string(count);
+            } else {
+                result += chars[i];
+            }
+        }
+        for (int i = 0; i < result.size(); i++) {
+            chars[i] = result[i];
+        }
+        return result.size();
+    }
+};
+
+
+
+
+
+
+// Optimal Solution
+// T.C = O(N)
+// S.C = O(1)
 class Solution {
 public:
     int compress(vector<char>& chars) {
