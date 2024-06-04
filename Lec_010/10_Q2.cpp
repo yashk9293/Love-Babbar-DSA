@@ -1,22 +1,28 @@
-// Question Link :- https://bit.ly/3y01Zdu
-// Find unique element in array
+// Question Link :- https://leetcode.com/problems/single-number/
+// Single Number
 
 
 // BRUTE FORCE APPROACH - to check every element if there count is 1 it means it unique and return that element
-// int findUnique(int *arr, int size) {
-//     int count=0;
-//     for(int i=0;i<size;i++){
-//         count=0;
-//         for(int j=0;j<size;j++){
-//             if(arr[i]==arr[j]){
-//                 count++;
-//             }
-//         }
-//         if(count==1){
-//             return arr[i];
-//         }
-//     }
-// }
+// T.C = O(n^2)
+// S.C = O(1)
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int count=0;
+        for(int i=0; i<nums.size(); i++){
+            count=0;
+            for(int j=0; j<nums.size(); j++){
+                if(nums[i] == nums[j]){
+                    count++;
+                }
+            }
+            if(count == 1){
+                return nums[i];
+            }
+        }
+        return -1;
+    }
+};
 
 
 
@@ -27,13 +33,19 @@
 // |  0 ^ a = a    |
 // |_______________|
 
-int findUnique(int *arr, int size) {
-   	int ans = 0;
-    for(int i = 0; i<size; i++) {
-        ans = ans^arr[i];
+
+// T.C = O(n)
+// S.C = O(1)
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int xorr = 0;
+        for(int i=0; i<nums.size(); i++) {
+            xorr = xorr ^ nums[i];
+        }
+        return xorr;
     }
-    return ans;
-}
+};
 
 // Input :-
 // 2 3 1 6 3 6 2
