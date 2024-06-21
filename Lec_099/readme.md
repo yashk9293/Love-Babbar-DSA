@@ -1,1 +1,1 @@
-# Articulation Points
+# Articulation Points in Graphs
