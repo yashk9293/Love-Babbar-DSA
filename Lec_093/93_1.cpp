@@ -1,7 +1,7 @@
 // Question Link :- https://www.codingninjas.com/studio/problems/shortest-path_920528?interviewProblemRedirection=true
 // Shortest Path
 
-// Count the shortest path in undirected weighted graph. In question wrong image has been shown.
+// Count the shortest path in undirected unweighted graph. In question wrong image has been shown.
 // It is unweighted.
 
 // T.C = O(V + E)
