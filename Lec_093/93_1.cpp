@@ -10,7 +10,7 @@
 // Time Complexity: O(V^3)
 // Space Complexity: O(V^2)
 int shortestPath(int v, int e, vector<vector<int>> &edges, int src, int dest) {
-    vector<vector<int>> adj(v+1, vector<int>(v + 1, 1000000000));
+    vector<vector<int>> adj(v+1, vector<int>(v + 1, 1000000000));  // as we have to choose minimum so we are taking maximum, else not taking it will lead to zero
     for(int i=0; i<e; i++) {
         int u = edges[i][0];
         int v = edges[i][1];
