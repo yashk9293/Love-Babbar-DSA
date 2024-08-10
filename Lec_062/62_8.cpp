@@ -1,9 +1,8 @@
 // Question Link :- https://leetcode.com/problems/binary-tree-postorder-traversal
 // Iterative Postorder Traversal using 1 stack
 
-// S.C = O(2N)
 // T.C = O(N)
-
+// S.C = O(N)
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
@@ -12,8 +11,9 @@ public:
         TreeNode* curr = root;
         TreeNode* temp;
 
-        if(root == NULL) return postorder;
-
+        if(root == NULL) {
+            return postorder;
+        }
         while(curr != NULL || !st.empty()) {
             if(curr != NULL) {
                 st.push(curr);
