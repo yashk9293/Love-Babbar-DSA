@@ -1,75 +1,26 @@
-// Question Link :- https://practice.geeksforgeeks.org/problems/check-for-balanced-tree/1
-// Check for Balanced Tree
+// Question Link :- https://leetcode.com/problems/balanced-binary-tree
+// Balanced Binary Tree (Striver)
 
-// Approach - 1
-// T.C = O(N^2)
-class Solution{
-    private:
-    int height(Node *root) {
+
+// T.C = O(N)
+// S.C = O(height)
+class Solution {
+public:
+    int solve(TreeNode* root, bool& result) {
         if(root == NULL) {
             return 0;
         }
-        int left = height(root->left);
-        int right = height(root->right);
-        
-        int ans = max(left, right) +1;
-        return ans;
+        int leftHeight = solve(root->left, result);
+        int rightHeight = solve(root->right, result);
+
+        if(abs(leftHeight - rightHeight) > 1) {
+            return result = 0;
+        }
+        return 1 + max(leftHeight, rightHeight); // to calculate the height of left and right subtree...
     }
-    public:
-    bool isBalanced(Node *root) {
-        if(root == NULL) {
-            return true;
-        }
-        
-        bool left = isBalanced(root->left);
-        bool right = isBalanced(root-> right);
-        bool diff = abs(height(root->left) - height(root->right)) <=1;
-        
-        if(left && right && diff) {
-            return true;
-        }
-        else return false;
-    }
-};
-
-
-
-
-
-
-
-// Approach - 2
-// T.C = O(N)
-class Solution {
-    public:
-    pair<bool, int> isBalancedFast(Node *root) {
-        if(root == NULL) {
-            pair<bool, int> p = make_pair(true, 0);
-            return p;
-        }
-        
-        pair<bool, int> left = isBalancedFast(root->left);
-        pair<bool, int> right = isBalancedFast(root->right);
-        
-        bool leftAns = left.first;
-        bool rightAns = right.first;
-        
-        bool diff = abs(left.second - right.second) <= 1;
-        
-        pair<bool, int> ans;
-        ans.second = max(left.second, right.second) + 1;
-        
-        if(leftAns && rightAns && diff) {
-            ans.first = true;
-        } 
-        else {
-            ans.first = false;
-        }
-        
-        return ans;
-    }
-    
-    bool isBalanced(Node *root) {
-        return isBalancedFast(root).first;
+    bool isBalanced(TreeNode* root) {
+        bool result = 1;
+        solve(root, result);
+        return result;
     }
 };
