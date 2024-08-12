@@ -1,47 +1,39 @@
-// Question Link :- https://practice.geeksforgeeks.org/problems/zigzag-tree-traversal/1
-// ZigZag Tree Traversal
+// Question Link :- https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal
+// Binary Tree Zigzag Level Order Traversal (Striver)
 
-// T.C = O(N)
+// T.C = O(N) -> each element is enqueued and dequeued only once
 // S.C = O(N)
 class Solution {
 public:
-    vector<int> zigZagTraversal(Node *root) {
-        vector<int> result;
-        if (root == NULL)
-            return result;
-
-        queue<Node *> q;
-        q.push(root);
-
-        bool leftToRight = true;
-
-        while (!q.empty()) {
-            int size = q.size();
-            vector<int> ans(size);          // here it is necessary to initialize the size, otherwise it will give SIGSEGV error
-
-            // Level Process
-            for (int i = 0; i < size; i++) {
-                Node *frontNode = q.front();
-                q.pop();
-
-                // normal insert or reverse insert
-                int index = leftToRight ? i : size - i - 1;
-                ans[index] = frontNode->data;
-
-                if (frontNode->left)
-                    q.push(frontNode->left);
-
-                if (frontNode->right)
-                    q.push(frontNode->right);
-            }
-
-            // direction change karni h
-            leftToRight = !leftToRight;
-
-            for (auto i : ans) {
-                result.push_back(i);
-            }
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
+        if(root == NULL) {
+            return ans;
         }
-        return result;
+        queue<TreeNode*> q;
+        q.push(root);
+        bool leftToRight = true;
+        while(!q.empty()) {
+            int size = q.size();
+            vector<int> level(size);  // size dena imp hai, kyuki level[i] se element daal rhe hai, push_back hota toh size jaruri nhi tha
+            for(int i=0; i<size; i++) {
+                TreeNode* node = q.front();
+                q.pop();
+                if(leftToRight) {
+                    level[i] = node->val;
+                } else {
+                    level[size-i-1] = node->val;
+                }
+                if(node->left) {
+                    q.push(node->left);
+                }
+                if(node->right) {
+                    q.push(node->right);
+                }
+            }
+            ans.push_back(level);
+            leftToRight = !leftToRight;
+        }
+        return ans;
     }
 };
