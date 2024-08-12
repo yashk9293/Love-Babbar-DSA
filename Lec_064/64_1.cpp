@@ -1,69 +1,69 @@
-// Question Link :- https://practice.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1
-// Boundary Traversal of binary tree
+// Question Link :- https://www.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1
+// Tree Boundary Traversal
 
-// T.C = O(N)
-// S.C = O(height of tree)
+// T.C = O(N) -> left O(H) + right O(H) + traversal O(N)
+// S.C = O(N)
+// O(H) or O(log2N) Recursive stack space while traversing the tree. In the worst case scenario the 
+// tree is skewed and the auxiliary recursion stack space would be stacked up to the maximum depth 
+// of the tree, resulting in an O(N) auxiliary space complexity.
+
 class Solution {
 public:
-    void traverseLeft(Node* root, vector<int> &ans) {
-        //base case
-        if( (root == NULL) || (root->left == NULL && root->right == NULL) )
-            return ;
-            
-        ans.push_back(root->data);
-        if(root->left)
-            traverseLeft(root->left, ans);
-        else
-            traverseLeft(root->right, ans);
+    bool isLeaf(Node* root) {
+        return !root->left && !root->right;
     }
     
-    void traverseLeaf(Node* root, vector<int> &ans) {
-        //base case
-        if(root == NULL)
-            return ;
-            
-        if(root->left == NULL && root->right == NULL) {
-            ans.push_back(root->data);
+    void leftBoundary(Node *root, vector<int>&ans){
+        if (root == NULL || (root->left == NULL && root->right == NULL)) {
             return;
         }
-        
-        traverseLeaf(root->left, ans);
-        traverseLeaf(root->right, ans);
+        ans.push_back(root->data);
+        if (root->left != NULL) {
+            leftBoundary(root->left, ans);
+        } else {
+            leftBoundary(root->right, ans);
+        }
     }
     
-    void traverseRight(Node* root, vector<int> &ans) {
-        //base case
-        if( (root == NULL) || (root->left == NULL && root->right == NULL) )
-            return ;
-        
-        if(root->right)
-            traverseRight(root->right, ans);
-        else
-            traverseRight(root->left, ans);
-            
-        //wapas aagye
-        ans.push_back(root->data);
+    void Leafnodes(Node *root, vector<int>&ans) {
+        // INORDER TRAVERSAL
+        if (root == NULL) {
+            return;
+        }
+        Leafnodes(root->left, ans);
+        if (root->left == NULL && root->right == NULL) {
+            ans.push_back(root->data);
+        }
+        Leafnodes(root->right, ans);
+    }
+    
+    void rightBoundary(Node *root, vector<int>& ans) {
+        if (root == NULL || (root->left == NULL && root->right == NULL)) {
+            return;
+        }
+        if (root->right != NULL) {
+            rightBoundary(root->right, ans);
+        } else {
+            rightBoundary(root->left, ans);
+        }
+        ans.push_back(root->data);  // add after recursion to reverse the order
     }
     
     vector <int> boundary(Node *root) {
         vector<int> ans;
-        if(root == NULL) {
-            return ans;
+        if(!isLeaf(root)) {
+            ans.push_back(root->data);
         }
-        
-        ans.push_back(root->data);
-        
-        //left part print/store
-        traverseLeft(root->left, ans);
-        
-        //traverse Leaf Nodes
-        //left subtree
-        traverseLeaf(root->left, ans);
-        //right subtree
-        traverseLeaf(root->right, ans);
-        
-        //traverse right part
-        traverseRight(root->right, ans);
+        if (root->left != NULL) {
+            leftBoundary(root->left, ans);
+        }
+       //add leaf
+        Leafnodes(root, ans); 
+
+        // Add right boundary nodes excluding the root and leaf nodes, in reverse order
+        if (root->right != NULL) {
+            rightBoundary(root->right, ans);
+        }
         
         return ans;
     }
