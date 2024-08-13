@@ -5,22 +5,28 @@
                                           / \
                                          /   \
                                         /     \ 
-                                 <2,4> 2       3 <3,11>
-                                      /       / \
-                                     /       /   \
-                                    /       /     \
-                         <4,0>  __ 4 <5,0> 5       6 __  <6,0>
-                               /    \     / \      /   \
-                            <0,0> <0,0> <0,0><0,0> <0,0><0,0>
+                                       /       \
+                                      /         \
+                               <2,4> 2           3 <3,11>
+                                    /           / \
+                                   /           /   \
+                                  /           /     \
+                                 /           /       \
+                                /           /         \
+                         <4,0> 4     <5,0> 5           6 <6,0>
+                             /  \         / \         /  \
+                            /    \       /   \       /    \
+                          <0,0> <0,0> <0,0> <0,0> <0,0> <0,0>
 
 // T.C = O(n)
 // S.C = O(height)
-class Solution{
+class Solution {
   public:
     pair<int, int> solve(Node *root) {
         if(root == NULL) {
-            pair<int, int>p = make_pair(0,0);
-            return p;
+            // pair<int, int>p = make_pair(0,0);
+            // return p;
+            return {0,0};
         }
         pair<int, int> left = solve(root->left);
         pair<int, int> right = solve(root->right);
