@@ -3,7 +3,42 @@
 
 // T.C = O(n)
 // S.C = O(height)
-// Approach - 1 (Using recursion)
+// the result vector stores the path from the root to the current node, which in the worst case (for a 
+// skewed tree) will also store up to H elements.
+
+// Approach - 1
+void solve(Node* root, int node, vector<int> &ans, vector<int> &result) {
+    if(root == NULL) {
+        return;
+    }
+    if(root->data == node) {
+        ans = result;
+        return;
+    }
+    result.push_back(root->data);
+    
+    solve(root->left, node, ans, result);
+    solve(root->right, node, ans, result);
+    result.pop_back();
+}
+
+int kthAncestor(Node *root, int k, int node) {
+    vector<int> ans, result;
+    solve(root, node, ans, result);
+    if(ans.size() < k) {
+        return -1;
+    }
+    return ans[ans.size()-k];
+}
+
+
+
+
+
+
+
+
+// Approach - 2 (love babbar)
 Node* solve(Node *root, int &k, int node) {
     // base case
     if(root == NULL) {
@@ -46,56 +81,4 @@ int kthAncestor(Node *root, int k, int node) {
     else {
         return ans->data;
     }
-}
-
-
-
-
-
-
-
-
-
-
-// Approach - 2 (using vector)
-Node *solve(Node *root, int k, int node, vector<int> &path, int &ans) {
-    if (root == NULL) {
-        return NULL;
-    }
-    path.push_back(root->data);
-    if (root->data == node) {
-        return root;
-    }
-    Node *left = solve(root->left, k, node, path, ans);
-    Node *right = solve(root->right, k, node, path, ans);
-
-    if (left != NULL || right != NULL) {
-        int size = path.size();
-
-        for (int i = 0; i < path.size(); i++) {
-            if (path[i] == node) {
-                int index = i - k;
-
-                if (index < 0)
-                    return NULL;
-
-                else
-                    ans = path[i - k];
-            }
-        }
-    }
-    else {
-        path.pop_back();
-        return NULL;
-    }
-}
-
-int kthAncestor(Node *root, int k, int node) {
-    if (root->data == node) {
-        return -1;
-    }
-    vector<int> path;
-    int ans = -1;
-    solve(root, k, node, path, ans);
-    return ans;
 }
