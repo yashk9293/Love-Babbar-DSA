@@ -1,33 +1,30 @@
 // Question Link :- https://practice.geeksforgeeks.org/problems/k-sum-paths/1
 // K Sum Paths
 
-// T.C = O(n^2)     Giving Runtime error
+// T.C = O(n^2)
 // S.C = O(height)
 class Solution{
   public:
     void solve(Node* root, int k, int &count, vector<int> path) {
-        //base case
-        if(root == NULL)
+        if(root == NULL) {
             return ;
-        
+        }
         path.push_back(root->data);
-        
-        //left
         solve(root->left, k, count, path);
-        //right
         solve(root->right, k, count, path);
-        
+
         //check for K Sum
         int size = path.size();
         int sum = 0;
-        for(int i = size-1; i>=0; i--)  {
+        for(int i = size-1; i>=0; i--) {
             sum += path[i];
-            if(sum == k)
+            if(sum == k) {
                 count++;
+            }
         }
-        
         path.pop_back();
     }
+
     int sumK(Node *root,int k) {
         vector<int> path;
         int count = 0;
@@ -44,24 +41,27 @@ class Solution{
 // S.C = O(height)
 class Solution{
   public:
-    int solve(Node *root, int k, map<int,int> &s, int sum) {
-        if(root == NULL)
-            return 0;
-        int c = 0;
-        sum += root -> data;
-        if(s.find(sum-k) != s.end())
-            c += s[sum - k];
-        s[sum]++;
-        int left = solve(root -> left, k, s, sum);
-        int right = solve(root -> right, k, s, sum);
-        s[sum]--;
-        return c + left + right;
+    void solve(Node *root,int k,map<int,int>& mp,int &count,int &sum){
+        if (root == NULL) {
+            return ;
+        }
+        sum += root->data;
+        if (mp.find(sum-k) != mp.end()) {
+            count += mp[sum-k];
+        }
+        mp[sum]++;
+        solve(root->left, k, mp, count, sum);
+        solve(root->right, k, mp, count, sum);
+        mp[sum]--;
+        sum -= root->data;
     }
-    int sumK(Node *root,int k)
-    {
-        // code here
-        map<int,int> s;
-        s[0]++;
-        return solve(root, k, s, 0);
+
+    int sumK(Node *root,int k) { 
+        int count = 0;
+        map<int,int> mp;
+        mp[0] = 1;
+        int sum = 0;
+        solve(root, k, mp, count, sum);
+        return count;
     }
 };
