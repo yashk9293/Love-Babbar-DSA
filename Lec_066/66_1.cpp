@@ -1,37 +1,70 @@
-// Question Link :- https://practice.geeksforgeeks.org/problems/tree-from-postorder-and-inorder/1
-// Tree from Postorder and Inorder
+// Question Link :- https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal
+// Construct Binary Tree from Inorder and Postorder Traversal
 
-// T.C = O(nlogn)
+// Approach 1
+// T.C = O(n^2)
 // S.C = O(n)
-void createMapping(int in[], map<int, int> &nodeToIndex, int n) {
-    for(int i=0; i<n; i++) {
-        nodeToIndex[in[i]]=i;
+class Solution {
+public:
+    TreeNode* solve(vector<int>& inorder, vector<int>& postorder, int start, int end, int &idx) {
+        if(start > end) {
+            return NULL;
+        }
+        int rootVal = postorder[idx]; // root nikal gya
+        int i = -1;
+        for(int j=start; j<=end; j++) {
+            if(inorder[j] == rootVal) {
+                i = j;
+                break;
+            }
+        }
+        idx--;
+        TreeNode* root = new TreeNode(rootVal); 
+        //why right before left?
+        //Postorder traversal processes the right subtree before the left subtree because when you're constructing the tree backwards (from the end of the postorder array), the right subtree comes before the left subtree in the postorder list.
+        root->right=solve(inorder, postorder, i+1, end, idx);
+        root->left=solve(inorder, postorder, start, i-1, idx);
+        return root;
     }
-}
-    
-Node* solve(int in[],int post[], int &index, int inorderStart, int inorderEnd, int n, map<int, int> &nodeToIndex) {
-    // base case
-    if(index < 0 || inorderStart > inorderEnd) {
-        return NULL;
+
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int n = inorder.size();
+        int idx = n-1;
+        return solve(inorder, postorder, 0, n-1, idx);
     }
-        
-    int element = post[index--];
-    Node* root = new Node(element);
-    int position = nodeToIndex[element];
-        
-    // recursive calls
-    // right ki call pehle, left ki call baad me
-    root->right = solve(in, post, index, position+1, inorderEnd, n, nodeToIndex);
-    root->left = solve(in, post, index, inorderStart, position-1, n, nodeToIndex);
-        
-    return root;
-}
-    
-    Node* buildTree(int in[],int post[], int n) {
-    int postOrderIndex = n-1;
-    map<int, int> nodeToIndex;
-    // create nodes to index mapping
-    createMapping(in, nodeToIndex, n);
-    Node* ans = solve(in, post, postOrderIndex, 0, n-1, n, nodeToIndex);
-    return ans;
-}
+};
+
+
+
+
+// Approach 2 (Using Map)
+// T.C = O(n)
+// S.C = O(n)
+class Solution {
+public:
+    unordered_map<int, int> mpp;  // {node value, index}
+    TreeNode* solve(vector<int>& inorder, vector<int>& postorder, int start, int end, int &idx) {
+        if(start > end) {
+            return NULL;
+        }
+        int rootVal = postorder[idx]; // root nikal gya
+        int i = mpp[rootVal];
+        idx--;
+        TreeNode* root = new TreeNode(rootVal); 
+        //why right before left?
+        //Postorder traversal processes the right subtree before the left subtree because when you're constructing the tree backwards (from the end of the postorder array), the right subtree comes before the left subtree in the postorder list.
+        root->right = solve(inorder, postorder, i+1, end, idx);
+        root->left = solve(inorder, postorder, start, i-1, idx);
+        return root;
+    }
+
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        mpp.clear();
+        int n = inorder.size();
+        int idx = n-1;
+        for(int i = 0; i<n; i++) {
+            mpp[inorder[i]] = i;
+        }
+        return solve(inorder, postorder, 0, n-1, idx);
+    }
+};
