@@ -1,88 +1,72 @@
-// Question Link :- https://practice.geeksforgeeks.org/problems/construct-tree-1/1
-// Construct Tree from Inorder & Preorder
+// Question Link :- https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal
+// Construct Binary Tree from Preorder and Inorder Traversal (MIK)
 
+// Approach 1
 // T.C = O(n^2)
-// S.C = O(1)
+// S.C = O(n)
 class Solution {
-    public:
-    int findPosition(int in[], int element, int n) {
-        for(int i=0; i<n; i++) {
-            if(in[i] == element) {
-                in[i]=0;       // Note :- imp point, othewise 1 test case not passing
-                return i;
-            }
-        }
-        return -1;
-    }
-    
-    Node* solve(int in[],int pre[], int &index, int inorderStart, int inorderEnd, int n) {
-        // base case
-        if(index >= n || inorderStart > inorderEnd) {
+public:
+    TreeNode* solve(vector<int>& preorder, vector<int>& inorder, int start, int end, int& idx) {
+        // Base case
+        if (start > end) {
             return NULL;
         }
-        
-        int element = pre[index++];
-        Node* root = new Node(element);
-        int position = findPosition(in, element, n);
-        
-        // recursive calls
-        // left ki call pehle, right ki call baad me
-        root->left = solve(in, pre, index, inorderStart, position-1, n);
-        root->right = solve(in, pre, index, position+1, inorderEnd, n);
+        int rootVal = preorder[idx];
+        int i = -1;
+        for (int j = start; j <= end; j++) {
+            if (inorder[j] == rootVal) {
+                i = j;
+                break;  // We found the root in inorder
+            }
+        }
+        idx++;  // Move to the next element in preorder
+
+        TreeNode* root = new TreeNode(rootVal);  // Create the root node
+        root->left = solve(preorder, inorder, start, i - 1, idx);  // Build left subtree
+        root->right = solve(preorder, inorder, i + 1, end, idx);  // Build right subtree
         
         return root;
     }
-    
-    Node* buildTree(int in[],int pre[], int n) {
-        int preOrderIndex = 0;
-        Node* ans = solve(in, pre, preOrderIndex, 0, n-1, n);
-        return ans;
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int idx = 0;  // Start with the first element in preorder
+        int n = inorder.size();
+        return solve(preorder, inorder, 0, n - 1, idx);
     }
 };
 
 
 
 
-
-
-
-
-// T.C = O(nlogn)
+// Approach 2 (Using Map)
+// T.C = O(n)
 // S.C = O(n)
-// in the above we have to rum findPosition func again n again for each iteration so we will use 
-// map, so ultimately we will be gonna have O(1) time complexity here.
 class Solution {
-    public:
-    void createMapping(int in[], map<int, int> &nodeToIndex, int n) {
-        for(int i=0; i<n; i++) {
-            nodeToIndex[in[i]]=i;
-        }
-    }
-    
-    Node* solve(int in[],int pre[], int &index, int inorderStart, int inorderEnd, int n, map<int, int> &nodeToIndex) {
-        // base case
-        if(index >= n || inorderStart > inorderEnd) {
+public:
+    unordered_map<int, int> mpp;  // {node value, index}
+    TreeNode* solve(vector<int>& preorder, vector<int>& inorder, int start, int end, int& idx) {
+        // NOTE :- idx is taken by reference because it is changing in the function
+        if (start > end) {
             return NULL;
         }
+        int rootVal = preorder[idx];
+        int i = mpp[rootVal];
+        idx++;   // Move to the next element in preorder
         
-        int element = pre[index++];
-        Node* root = new Node(element);
-        int position = nodeToIndex[element];
-        
-        // recursive calls
-        // left ki call pehle, right ki call baad me
-        root->left = solve(in, pre, index, inorderStart, position-1, n, nodeToIndex);
-        root->right = solve(in, pre, index, position+1, inorderEnd, n, nodeToIndex);
+        TreeNode* root = new TreeNode(rootVal);   // Create the root node
+        root->left = solve(preorder, inorder, start, i-1, idx);  // Build left subtree
+        root->right = solve(preorder, inorder, i+1, end, idx);  // Build right subtree
         
         return root;
     }
-    
-    Node* buildTree(int in[],int pre[], int n) {
-        int preOrderIndex = 0;
-        map<int, int> nodeToIndex;
-        // create nodes to index mapping
-        createMapping(in, nodeToIndex, n);
-        Node* ans = solve(in, pre, preOrderIndex, 0, n-1, n, nodeToIndex);
-        return ans;
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int idx = 0;   // Start with the first element in preorder
+        mpp.clear();
+        int n = preorder.size();
+        for(int i = 0; i<n; i++) {
+            mpp[inorder[i]] = i;
+        }
+        return solve(preorder, inorder, 0, n-1, idx);
     }
 };
