@@ -1,6 +1,8 @@
 // Question Link :- https://leetcode.com/problems/search-in-a-binary-search-tree/description/
 // Search in a Binary Search Tree
 
+// T.C = O(logN)
+// S.C = O(logN)
 class Solution {
 public:
     TreeNode* searchBST(TreeNode* root, int val) {
