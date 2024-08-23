@@ -1,6 +1,8 @@
 // Question Link :- https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
 // Convert Sorted Array to Binary Search Tree
 
+// T.C = O(N)
+// S.C = O(N)
 class Solution {
 public:
     TreeNode* buildTree(vector<int> &nums,int s, int e){
