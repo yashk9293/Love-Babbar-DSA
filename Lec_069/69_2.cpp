@@ -3,6 +3,8 @@
 
 // T.C = O(logN)
 // S.C = O(logN)
+
+// Approach - 1 (Recursive)
 class Solution {
 public:
     TreeNode* searchBST(TreeNode* root, int val) {
@@ -18,5 +20,27 @@ public:
         else {
             return searchBST(root->right, val);
         }
+    }
+};
+
+
+
+
+// Approach - 2 (Iterative)
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+        while(root != NULL) {
+            if(root->val == val) {
+                return root;
+            }
+            if(root->val > val) {
+                root = root->left;
+            }
+            else {
+                root = root->right;
+            }
+        }
+        return NULL;
     }
 };
