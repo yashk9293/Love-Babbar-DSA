@@ -1,4 +1,4 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/two-sum-in-a-bst_1062631
+// Question Link :- https://leetcode.com/problems/two-sum-iv-input-is-a-bst/
 // Two Sum IV - Input is a BST
 
 
@@ -14,37 +14,56 @@
 // .
 
 
-// Approach - 2 
-// T.C = O(n)
-// S.C = O(h)
-void inOrder(BinaryTreeNode<int>* root, vector<int>& ans) {
-    if(root == NULL) {
-        return;
-    }
-    inOrder(root->left, ans);
-    ans.push_back(root->data);
-    inOrder(root->right, ans);
-}
 
-bool twoSumInBST(BinaryTreeNode<int>* root, int target) {
-    if(root == NULL) {
+
+
+// Approach - 2
+// T.C = O(N)
+// S.C = O(N)
+class Solution {
+public:
+    void inOrder(TreeNode* root, vector<int>& ans) {
+        if(root == NULL) {
+            return;
+        }
+        inOrder(root->left, ans);
+        ans.push_back(root->val);
+        inOrder(root->right, ans);
+    }
+
+    bool findTarget(TreeNode* root, int k) {
+        if(root == NULL) {
+            return false;
+        }
+        vector<int> ans;
+        inOrder(root, ans);
+
+        /*
+
+        unordered_map<int, int> mp;
+        for(auto num : ans) {
+            if(mp.find(k-num) != mp.end()) {
+                return true;
+            }
+            mp[num]++;
+        }
+        return false;
+        
+        */
+
+        int i=0, j= ans.size()-1;
+        while(i < j) {
+            int sum = ans[i] + ans[j];
+            if(sum == k) {
+                return true;
+            }
+            if(sum > k) {
+                j--;
+            } 
+            else {
+                i++;
+            }
+        }
         return false;
     }
-    vector<int> inOrderVal;
-    inOrder(root, inOrderVal);
-
-    int i=0, j=inOrderVal.size()-1;
-    while(i < j) {
-        int sum = inOrderVal[i] + inOrderVal[j];
-        if(sum == target) {
-            return true;
-        }
-        if(sum > target) {
-            j--;
-        } 
-        else {
-            i++;
-        }
-    }
-    return false;
-}
+};
