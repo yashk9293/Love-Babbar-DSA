@@ -1,5 +1,5 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/_893049?topList=love-babbar-dsa-sheet-problems
-// Predecessor And Successor In BST
+// Question Link :- https://www.geeksforgeeks.org/problems/predecessor-and-successor/1
+// Predecessor and Successor
 
 // Approach - 1
 // T.C = O(n)
@@ -8,82 +8,93 @@
 // find the key in the array, and then successor and predecessor of the key.
 
 
-// Approach - 2
-// T.C = O(n)
+// Approach - 2 (Using 2 loop)
+// T.C = O(H)
 // S.C = O(1)
-pair<int, int> predecessorSuccessor(TreeNode *root, int key) {
-    int predecessor = -1;
-    int successor = -1;
-
-    // Initializing temporary node with head.
-    TreeNode *temp = root;
-
-    // Traversing in tree.
-    while (temp != NULL) {
-        if (key > temp->data) {
-            // Updating predecessor.
-            predecessor = temp->data;
-            temp = temp->right;
+class Solution {
+    public:
+    void findPreSuc(Node* root, Node*& pre, Node*& suc, int key) {
+        Node* temp = root;   // Initializing temporary node with head.
+        while(temp != NULL) {
+            if(temp->key <= key) {
+                temp = temp->right;
+            } else {
+                suc = temp;
+                temp = temp->left;
+            }
         }
-        else {
-            temp = temp->left;
-        }
-    }
-
-    temp = root;
-
-    // Traversing in tree.
-    while (temp != NULL) {
-        if (key >= temp->data) {
-            temp = temp->right;
-        }
-        else {
-            // Updating successor.
-            successor = temp->data;
-            temp = temp->left;
+        while(root != NULL) {
+            if(root->key >= key) {
+                root = root->left;
+            } else {
+                pre = root;
+                root = root->right;
+            }
         }
     }
-    return make_pair(predecessor, successor);
-}
+};
+
+
+
+
+// Approach - 3 (using 1 loop)
+// T.C = O(H)
+// S.C = O(1)
+class Solution {
+    public:
+    void findPreSuc(Node* root, Node*& pre, Node*& suc, int key) {
+        while(root != NULL) {
+            if(key > root->key) {
+                pre = root;
+                root = root->right;
+            } else if(key < root->key) {
+                suc = root;
+                root = root->left;
+            } else {  // Key matches the root's key
+                // Find predecessor: Max value in the left subtree
+                if(root->left != NULL) {
+                    Node* temp = root->left;
+                    while(temp->right != NULL) {
+                        temp = temp->right;
+                    }
+                    pre = temp;
+                }
+                // Find successor: Min value in the right subtree
+                if(root->right != NULL) {
+                    Node* temp = root->right;
+                    while(temp->left != NULL) {
+                        temp = temp->left;
+                    }
+                    suc = temp;
+                }
+                break;
+            }
+        }
+    }
+};
 
 
 
 
 
-
-
-// Alternate sol(Love babbar - not necessary) 
-// only 2 test case pass, rest giving runtime error
-
-pair<int, int> predecessorSuccessor(TreeNode* root, int key) {
-    TreeNode* temp = root;
-    int pred = -1;
-    int succ = -1;
-    
-    while(temp->data != key) {
-        if(temp->data > key) {
-            succ = temp->data;
-            temp = temp->left;
+// Approach - 4 (using Recursion)
+// T.C = O(H)
+// S.C = O(1)
+class Solution {
+    public:
+    void findPreSuc(Node* root, Node*& pre, Node*& suc, int key) {
+        if(!root) {
+            return;
+        }
+        if(root->key > key) {
+            suc = root;
+            findPreSuc(root->left, pre, suc, key);
+        } else if(root->key < key) {
+            pre = root;
+            findPreSuc(root->right, pre, suc, key);
         } else {
-            pred = temp->data;
-            temp = temp->right;
+            findPreSuc(root->left, pre, suc, key);
+            findPreSuc(root->right, pre, suc, key);
         }
     }
-
-    // Prdecessor
-    TreeNode* leftTree = temp->left;
-    while(leftTree != NULL) {
-        pred = leftTree->data;
-        leftTree = leftTree->right;
-    }
-
-    // Successor
-    TreeNode* rightTree = temp->right;
-    while(rightTree != NULL){
-        succ = rightTree->data;
-        rightTree = rightTree->left;
-    }
-
-    pair<int, int> ans = make_pair(pred, succ);
-    return ans;
-}70
+};
