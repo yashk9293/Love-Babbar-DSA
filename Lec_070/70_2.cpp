@@ -4,44 +4,34 @@
 // T.C = O(n)
 // S.C = O(1)
 int morrisTraversal(BinaryTreeNode<int>* root, int k) {
-    BinaryTreeNode<int>* curNode = root;
-
-    while (curNode != NULL) {
-        if (curNode->left == NULL) {
-            k = k - 1;
-
-            // If 'curNode' is 'k-th' smallest node
+    BinaryTreeNode<int>* curr = root;
+    while (curr != NULL) {
+        if (curr->left == NULL) {
+            k--;
             if (k == 0) {
-                return curNode->data;
+                return curr->data;
             }
-            curNode = curNode->right;
-        } 
-        else {
-            BinaryTreeNode<int>* prev = curNode->left;
-
-            // Find rightmost child node of 'curNode'
-            while (prev->right != NULL && prev->right != curNode) {
-                prev = prev->right;
+            curr = curr->right;
+        } else {
+            BinaryTreeNode<int>* temp = curr->left;
+            while (temp->right != NULL && temp->right != curr) {  // Find rightmost child node of 'curr->left'
+                temp = temp->right;
             }
-            // If rightmost node is leaf node then
-            // Make a connection between rightmost node and 'curNode'
-            if (prev->right == NULL) {
-                prev->right = curNode;
-                curNode = curNode->left;
-            }
-            else {
-                prev->right = NULL;
-                k = k - 1;
+            // If rightmost node is leaf node then Make a connection between rightmost node and 'curr'
+            if (temp->right == NULL) {
+                temp->right = curr;
+                curr = curr->left;
+            } else {
+                temp->right = NULL;
+                k--;
                 if (k == 0) {
-                    // If 'curNode' is 'k-th' smallest node
-                    return (curNode->data);
+                    return curr->data;
                 }
-                curNode = curNode->right;
+                curr = curr->right;
             }
         }
     }
-    // If number of nodes less than 'k'
-    return -1;
+    return -1;  // If number of nodes less than 'k'
 }
 
 int kthSmallest(BinaryTreeNode<int>* root, int k) {
