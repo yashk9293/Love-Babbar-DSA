@@ -1,84 +1,78 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/largest-bst-subtree_893103
+// Question Link :- https://www.geeksforgeeks.org/problems/largest-bst/1
+// https://www.codingninjas.com/studio/problems/largest-bst-subtree_893103
 // Size of Largest BST in Binary Tree
+// (Return the size of the largest sub-tree which is also a BST)
 
-// Approach - 1 (Brute Force)
+// Brute Force
 // T.C = O(n^2)
 // S.C = O(n)
 // in every node we will call isValidBST() function which we had done earlier
 
-bool isValidBST(TreeNode* root, int min, int max) {
-    if (root == NULL) {
-        return true;           // Base case: An empty subtree is a valid BST.
-    }
-    if (root->data < min || root->data > max) {       // Check if the data of the current node is within the specified range.
-        return false;
-    }
-    return isValidBST(root->left, min, root->data - 1) && isValidBST(root->right, root->data + 1, max);
-}
-
-int size(TreeNode* root) {
-    if (root == NULL) {    // Base case: Size of an empty subtree is 0.
-        return 0;
-    }
-    return 1 + size(root->left) + size(root->right);        
-}
-
-int largestBST(TreeNode* root) {
-    if (isValidBST(root, INT_MIN, INT_MAX) == true) {
-        return size(root);      // Return the size of the current subtree.
-    }
-    return max(largestBST(root->left), largestBST(root->right));
-}
-
-
-
-
-
-
-
-
-// Approach - 2 (Optimal Solution)
-// T.C = O(n)
-// S.C = O(n)
-
-class info {
+class Solution{
     public:
-        int maxi;
-        int mini;
-        bool isBST;
-        int size;
+    bool isValidBST(Node* root, long mini, long maxi) {
+        if(root == NULL) {
+            return true;
+        }
+        if(root->data <= mini || root->data >= maxi) {
+            return false;
+        }
+        bool x = isValidBST(root->left, mini, root->data);
+        bool y = isValidBST(root->right, root->data, maxi);
+        return x && y;
+    }
+    
+    int size(Node* root) {
+        if (root == NULL) {    // Base case: Size of an empty subtree is 0.
+            return 0;
+        }
+        return 1 + size(root->left) + size(root->right);        
+    }
+    
+    int largestBst(Node *root) {
+    	if (isValidBST(root, LLONG_MIN, LLONG_MAX) == true) {
+            return size(root);      // Return the size of the current subtree.
+        }
+        return max(largestBst(root->left), largestBst(root->right));
+    }
 };
 
-info solve(TreeNode* root, int &ans) {
-    // base case
-    if(root == NULL) {
-        return {INT_MIN, INT_MAX, true, 0};
+
+
+
+
+
+// Optimal Solution
+// T.C = O(n)
+// S.C = O(n)
+class Result {
+public:
+    int size, max, min;
+    
+    Result(int size, int max, int min) {
+        this->size = size;
+        this->max = max;
+        this->min = min;
     }
-    info left = solve(root->left, ans);
-    info right = solve(root->right, ans);
+};
 
-    info currNode;
-
-    currNode.size = left.size + right.size + 1;
-    currNode.maxi = max(root->data, right.maxi);
-    currNode.mini = min(root->data, left.mini);
-
-    if(left.isBST && right.isBST && (root->data > left.maxi) && (root->data < right.mini)) {
-        currNode.isBST = true;
-    } 
-    else {
-        currNode.isBST = false;
+class Solution {
+  private:
+    Result solve(Node *root) {
+        if (root == NULL) {
+            return Result(0, INT_MIN, INT_MAX);   // INT_MIN in place of max and INT_MAX in place of min
+        }
+        Result left = solve(root->left);
+        Result right = solve(root->right);
+        
+        if (root->data > left.max && root->data < right.min) {
+            return Result(1 + left.size + right.size, max(root->data, right.max), min(root->data, left.min)); 
+        }
+        return Result(max(left.size, right.size), INT_MAX, INT_MIN);
     }
-
-    if(currNode.isBST) {
-        ans = max(ans, currNode.size);
+    
+  public:
+    int largestBst(Node *root) {
+        return solve(root).size;
     }
-
-    return currNode;
-}
-
-int largestBST(TreeNode* root) {
-    int maxSize = 0;
-    info temp = solve(root, maxSize);
-    return maxSize;
-}
+};
