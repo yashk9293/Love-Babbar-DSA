@@ -1,7 +1,6 @@
 // Question Link :- https://www.codingninjas.com/studio/problems/h_920474
 // Merge Two BSTs
 
-// Approach - 1
 // step 1 : store the inorder of both the bst
 // step 2 : merge two sorted arrays
 // step 3 : make bst from inorder sorted array
