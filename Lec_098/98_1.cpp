@@ -29,7 +29,7 @@ public:
                 }
             } else {
                 // Back edge found
-                low[node] = min(low[node], disc[neigh]);
+                low[node] = min(low[node], low[neigh]);
             }
         }
     }
