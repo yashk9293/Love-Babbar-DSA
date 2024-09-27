@@ -26,7 +26,7 @@ void dfs(int node, int parent, int &timer, vector<int> &disc,
             }
         } else {
             // Back edge found
-            low[node] = min(low[node], disc[neigh]);
+            low[node] = min(low[node], low[neigh]);
         }
     }
 }
@@ -39,7 +39,7 @@ vector<vector<int>> findBridges(vector<vector<int>> &edges, int n, int m) {
         int v = edges[i][1];
 
         adjList[u].push_back(v);
-        adjList[v].push_back(u); 
+        adjList[v].push_back(u);
     }
 
     int timer = 0;
