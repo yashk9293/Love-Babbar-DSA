@@ -17,13 +17,11 @@ class Solution {
         }
         
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        pq.push({0, 1}); // {dist, node}
         vector<int> result(n+1, INT_MAX);  // vertex starting from 1 in the ques
-        vector<int> parent(n+1);
-        for(int i = 1; i<=n; i++) {
-            parent[i] = i;
-        }
         result[1] = 0;  // source is 1 in the ques
-		pq.push({0, 1});
+        vector<int> parent(n+1, -1);
+		
 		while(!pq.empty()) {
 		    int d = pq.top().first;
 		    int node = pq.top().second;
@@ -39,15 +37,15 @@ class Solution {
 		    }
 		}
         vector<int> path;
-        int destNode = n;     // destination in n, in the ques
+        int src = 1, destNode = n;     // destination in n, in the ques
         if(result[destNode] == INT_MAX) {  // could never reached destination
             return {-1};
         }
-        while(parent[destNode] != destNode) {
+        while(destNode != src) {
             path.push_back(destNode);
             destNode = parent[destNode];
         }
-        path.push_back(1);  //last element :- source node
+        path.push_back(1);  // last element :- source node
         path.push_back(result[n]); // first element is the  weight of the path;
         reverse(begin(path), end(path));
         
