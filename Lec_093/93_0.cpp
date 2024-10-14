@@ -19,10 +19,8 @@ vector<int> shortestPath( vector<pair<int,int>> edges , int n , int m, int sourc
     }
 
     vector<bool> visited(n+1, false);   // declaring size is very imp, otherwise we'll get TLE
-    vector<int> parent(n+1);            // declaring size is very imp, otherwise we'll get TLE
-    for(int i = 1; i<=n; i++) {
-        parent[i] = i;
-    }
+    vector<int> parent(n+1, -1);        // declaring size is very imp, otherwise we'll get TLE
+
     queue<int> que;
     que.push(source);
     visited[source] = true;
