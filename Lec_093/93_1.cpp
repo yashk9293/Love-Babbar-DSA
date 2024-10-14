@@ -1,16 +1,16 @@
 // Question Link :- https://www.codingninjas.com/studio/problems/shortest-path_920528?interviewProblemRedirection=true
-// Shortest Path
-
-// Count the shortest path in undirected unweighted graph. In question wrong image has been shown.
-// It is unweighted.
+// Count Shortest Path in undirected unweighted graph from given src to dest
 
 
+// In question wrong image has been shown. It is unweighted.
 
-// Approach - 1 (Floyd Warshell Algorithm)
+
+
+// Approach - 1 (Floyd Warshell Algorithm) [Brute Force]
 // Time Complexity: O(V^3)
 // Space Complexity: O(V^2)
 int shortestPath(int v, int e, vector<vector<int>> &edges, int src, int dest) {
-    vector<vector<int>> adj(v+1, vector<int>(v + 1, 1000000000));  // as we have to choose minimum so we are taking maximum, else not taking it will lead to zero
+    vector<vector<int>> adj(v+1, vector<int>(v + 1, 1000000000));   // as we have to choose minimum so we are taking maximum, else not taking it will lead to zero
     for(int i=0; i<e; i++) {
         int u = edges[i][0];
         int v = edges[i][1];
@@ -36,7 +36,7 @@ int shortestPath(int v, int e, vector<vector<int>> &edges, int src, int dest) {
 
 
 
-// Approach - 2 (Using BFS)
+// Approach - 2 (Using BFS) [Preferred]
 // T.C = O(V + E)
 // S.C = O(V + E)
 #include <bits/stdc++.h> 
@@ -50,15 +50,12 @@ int shortestPath(int v, int e, vector<vector<int>> &edges, int source, int dest)
         adj[v].push_back(u);
     }
     vector<bool> visited(v+1, false);            
-    vector<int> parent(v+1);
+    vector<int> parent(v+1, -1);
 
     queue<int> que;
     que.push(source);
     visited[source] = true;
     parent[source] = -1;
-    for(int i = 1; i<=v; i++) {
-        parent[i] = i;
-    }
     while(!que.empty()) {
         int u = que.front();
         que.pop();
