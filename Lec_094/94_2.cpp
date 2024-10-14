@@ -2,9 +2,13 @@
 // Shortest path in Directed Acyclic Graph Weighted Graph
 
 // Approach - 1 (Dijkstra's Algorithm)
+// T.C (with regular queue) = O(n+m)
+// T.C (with priority queue) = O((n+m)*logn) 
+// S.C = O(n+m)
+
 class Solution {
   public:
-     vector<int> shortestPath(int n,int m, vector<vector<int>>& edges){
+     vector<int> shortestPath(int n, int m, vector<vector<int>>& edges){
         unordered_map<int, vector<pair<int, int>>> adj;
         for(auto vec : edges) {
             int u = vec[0];
@@ -15,7 +19,7 @@ class Solution {
         vector<int> distance(n, 1e9);
         distance[0] = 0;
         queue<pair<int,int>> q;   // we can use priority queue also
-        q.push({0,0});
+        q.push({0,0});   // {dist, node} .. source is 0 for this question
         while(!q.empty()) {
             int d = q.front().first;
             int node = q.front().second;
@@ -29,13 +33,12 @@ class Solution {
                 }
             }
         }
-        vector<int>ans(n, -1);
         for(int i=0; i<n; i++) {
-            if(distance[i] != 1e9) {
-                ans[i] = distance[i];
+            if(distance[i] == 1e9) {
+                distance[i] = -1;
             }
         }
-        return ans;
+        return distance;
     }
 };
 
@@ -44,36 +47,29 @@ class Solution {
 
 
 
-
-
-
-
-// Approach - 2
+// Approach - 2 (Toposort DFS)
+// T.C = O(n+m)
+// S.C = O(n+m)
 class Solution {
   public:
-    void solveDFS(int node, unordered_map<int, vector<pair<int, int>>> adjList, vector<int> &visited, stack<int> &st){
-        visited[node] = 1;
+    void solveDFS(int u, unordered_map<int, vector<pair<int, int>>> adjList, vector<int> &visited, stack<int> &st){
+        visited[u] = 1;
     
-        for(auto neigh: adjList[node]){
-            if(visited[neigh.first]==0){
-                solveDFS(neigh.first, adjList, visited, st);
+        for(auto v: adjList[u]) {
+            if(!visited[v.first]) {
+                solveDFS(v.first, adjList, visited, st);
             }
         }
-        st.push(node);
+        st.push(u);
     }
     
     stack<int> topoSort(unordered_map<int, vector<pair<int, int>>> adjList, int n){
         stack<int> st;
-        vector<int> visited(n, 0);
+        vector<bool> visited(n, false);
     
-        // for(int i=0; i<n; i++){
-        //     if(!visited[i]){
-        //         solveDFS(i, adjList, visited, s);
-        //     }
-        // }
-        for(auto x : adjList) {
-            if(visited[x.first] == 0) {
-                solveDFS(x.first, adjList, visited, st);
+        for(int i=0; i<n; i++){
+            if(!visited[i]){
+                solveDFS(i, adjList, visited, st);
             }
         }
         return st;
@@ -96,18 +92,15 @@ class Solution {
         vector<int> distance(N, INT_MAX);
         int src = 0;
         distance[src] = 0;
-        while(!st.empty()){
+        while(!st.empty()) {
             int node = st.top();
             st.pop();
             
-            if(distance[node] != INT_MAX){
-                for(auto neighbour: adjList[node]){
-                    // distance[neighbour.first] = min(distance[neighbour.first], distance[node]+neighbour.second);
-                    int v = neighbour.first;
-                    int wt = neighbour.second;
-                    if(distance[node] + wt < distance[v]) {
-                        distance[v] = distance[node] + wt;
-                    }
+            for(auto it: adjList[node]) {
+                int v = it.first;
+                int wt = it.second;
+                if(distance[node] + wt < distance[v]) {
+                    distance[v] = distance[node] + wt;
                 }
             }
         }
