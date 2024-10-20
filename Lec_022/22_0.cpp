@@ -131,10 +131,7 @@ bool checkPalindrome(string s){
 
 // Question Link :- https://leetcode.com/problems/valid-palindrome/
 // Valid Palindrome
-#include<string>
-#include<iostream>
-#include<vector>
-using namespace std;
+
 class Solution {
 private:
     bool valid(char ch) {
