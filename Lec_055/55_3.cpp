@@ -1,25 +1,47 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/insert-an-element-at-its-bottom-in-a-given-stack_1171166
-// Insert An Element At Its Bottom In A Given Stack
+// Question Link :- https://www.geeksforgeeks.org/problems/insert-an-element-at-the-bottom-of-a-stack/1
+// Insert an Element at the Bottom of a Stack
 
-// O(N)
-#include <bits/stdc++.h> 
-
-void solve(stack<int>& s, int x) {
-    //base case
-    if(s.empty()) {
-        s.push(x);
-        return ;
+// Approach - 1 (Recursive)
+// T.C = O(n)
+// S.C = O(1) exluding the O(n) system stack used in recursion
+class Solution{
+public:
+    void solve(stack<int> &st, int x) {
+        if(st.empty()) {
+            st.push(x);
+            return;
+        }
+        int currTop = st.top();
+        st.pop();
+        solve(st, x);
+        st.push(currTop);
     }
-    int num = s.top();
-    s.pop();
-    
-    //recursive call
-    solve(s, x);
-    
-    s.push(num);
-}
+    stack<int> insertAtBottom(stack<int> st,int x){
+        solve(st, x);
+        return st;
+    }
+};
 
-stack<int> pushAtBottom(stack<int>& myStack, int x) {
-    solve(myStack, x);
-    return myStack;
-}
+
+
+
+
+// Approach - 2 (Iterative)
+// T.C = O(n)
+// S.C = O(n)
+class Solution{
+public:
+    stack<int> insertAtBottom(stack<int> st,int x){
+        stack<int>temp;
+        while(!st.empty()){
+            temp.push(st.top());
+            st.pop();
+        } 
+        st.push(x);
+        while(!temp.empty()){   
+            st.push(temp.top());
+            temp.pop();
+        }
+        return st;
+    }
+};
