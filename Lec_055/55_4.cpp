@@ -1,50 +1,12 @@
-// Question Link :- https://www.codingninjas.com/studio/problems/reverse-stack-using-recursion_631875
-// Reverse Stack Using Recursion
+// Question Link :- https://www.geeksforgeeks.org/problems/reverse-a-stack/1
+// Reverse a Stack
 
-// Approach - 1
-// T.C = O(N^2)
-// S.C = O(N)
-void insertAtBottom(stack<int> &s, int element) {
-    //basecase
-    if(s.empty()) {
-        s.push(element);
-      	return ;
-    }
-    int num = s.top();
-    s.pop();
-    
-    //recursive call
-    insertAtBottom(s, element);
-    
-    s.push(num);
-}
-
-void reverseStack(stack<int> &stack) {
-  	//base case
-    if(stack.empty()) {
-        return ;
-    }
-    
-    int num = stack.top();
-    stack.pop();
-    
-    //recursive call
-    reverseStack(stack);
-    
-    insertAtBottom(stack,num);
-}
-
-
-
-
-
-
-// Approach - 2
-// T.C = O(N^2)
-// S.C = O(N)
+// Recursive Approach - 1
+// T.C = O(n^2)
+// S.C = O(n) Auxiliary Space (we took extra one temp stack)
 class Solution{
 public:
-    queue<int> ans;
+    queue<int>ans;
     void Reverse(stack<int> &St){
         if(St.empty()) {
             return;
@@ -57,6 +19,59 @@ public:
         while (!ans.empty()){
             St.push(ans.front());
             ans.pop();
+        }
+    }
+};
+
+
+
+
+// Recursive Approach - 2
+// T.C = O(n^2)
+// S.C = O(1)
+class Solution{
+public:
+    void insertAtBottom(stack<int>& St, int element) {
+        if(St.empty()) {
+            St.push(element);
+            return;
+        }
+        
+        int currTop = St.top();
+        St.pop();
+        insertAtBottom(St, element);
+        St.push(currTop);
+    }
+
+    void Reverse(stack<int> &St){
+        if(St.empty()) {
+            return;
+        }
+        int top = St.top();
+        St.pop();
+        Reverse(St);
+
+        insertAtBottom(St, top);
+    }
+};
+
+
+
+
+// Iterative Approach
+// T.C = O(n)
+// S.C = O(n)
+class Solution{
+public:
+    void Reverse(stack<int> &St){
+        vector<int>arr; 
+        while (!St.empty()){
+            arr.push_back(St.top());
+            St.pop();
+        }
+        int n = arr.size();
+        for (int i = 0; i < n; i++){
+            St.push(arr[i]);
         }
     }
 };
