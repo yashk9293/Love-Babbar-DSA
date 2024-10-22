@@ -6,6 +6,39 @@
 // S.C = O(n) Auxiliary Space (we took extra one temp stack)
 class Solution{
 public:
+    void Reverse(stack<int> &St){
+        if(St.empty()) {
+            return;
+        }
+        
+        int top = St.top();
+        St.pop();
+        Reverse(St); //I am hoping my Reverse function will reverse the remaining stack
+
+        //Now I need to push top at the bottom of the stack
+        stack<int> temp;
+        while(!St.empty()) {
+            temp.push(St.top());
+            St.pop();
+        }
+      
+        St.push(top); //push at bottom
+        //Now push remaining elements
+        while(!temp.empty()) {
+            St.push(temp.top());
+            temp.pop();
+        }
+    }
+};
+
+
+
+
+// Recursive Approach - 2
+// T.C = O(n^2)
+// S.C = O(n) Auxiliary Space (we took extra one temp queue GLOBALLY)
+class Solution{
+public:
     queue<int>ans;
     void Reverse(stack<int> &St){
         if(St.empty()) {
@@ -26,7 +59,9 @@ public:
 
 
 
-// Recursive Approach - 2
+
+
+// Recursive Approach - 3 [Preferred]
 // T.C = O(n^2)
 // S.C = O(1)
 class Solution{
