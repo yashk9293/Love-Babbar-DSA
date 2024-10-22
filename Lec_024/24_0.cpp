@@ -10,14 +10,10 @@ public:
         int cnt = 0;
         for (int i=2; i*i <= n; i++) {
             if (n % i == 0) {
-                cnt++;
+                return false;
             }
         }
-        if (cnt > 0) {
-            return false;
-        } else {
-           return true;
-        }
+        return true;
     }
 
     int countPrimes(int n) {
