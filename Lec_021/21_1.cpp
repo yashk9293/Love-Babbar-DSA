@@ -1,5 +1,8 @@
 // Question Link :- https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/description/
+// Check if Array Is Sorted and Rotated
 
+// T.C = O(N)
+// S.C = O(1)
 class Solution {
 public:
     bool check(vector<int>& nums) {
