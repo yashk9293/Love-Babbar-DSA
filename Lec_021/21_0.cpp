@@ -1,5 +1,9 @@
-// https://leetcode.com/problems/rotate-array/description/
+// Question Link :- https://leetcode.com/problems/rotate-array/description/
+// Rotate Array
 
+// Approach - 1
+// T.C = O(N)
+// S.C = O(N)
 class Solution {
 public:
     void rotate(vector<int>& nums, int k) {
@@ -13,27 +17,9 @@ public:
 
 
 
-
-
-
-
-
-// ------------- Method - 2 ----------------
-class Solution {
-public:
-    void rotate(vector<int>& nums, int k) {
-        k%=nums.size();
-        reverse(nums.begin(), nums.end());
-        reverse(nums.begin(), nums.begin()+k);
-        reverse(nums.begin()+k, nums.end());
-    }
-};
-
-
-
-
-
-// ------------- Method - 3 ---------------
+// Approach - 2
+// T.C = O(N)
+// S.C = O(N)
 class Solution {
 public:
     void rotate(vector<int>& nums, int k) {
@@ -49,6 +35,23 @@ public:
         nums = back;
     }
 };
+
+
+
+// Approach - 3 
+// T.C = O(N)
+// S.C = O(1)
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        k%=nums.size();
+        reverse(nums.begin(), nums.end());
+        reverse(nums.begin(), nums.begin()+k);
+        reverse(nums.begin()+k, nums.end());
+    }
+};
+// we can do also by  pointer for reversing
+
 
 
 
