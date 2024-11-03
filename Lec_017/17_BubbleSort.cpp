@@ -1,5 +1,8 @@
-// space complexity - O(1)
-// time complexity - O(n^2)
+// Question Link :- https://www.naukri.com/code360/problems/bubble-sort_980524
+// Bubble Sort
+
+// T.C = O(n^2)
+// S.C = O(1)
 
 // best case - already sorted    -> tc = O(n)
 // worst case - reverse sorted
@@ -84,10 +87,10 @@ using namespace std;
 
 
 void bubbleSort(vector<int>& arr, int n) {   
-    for(int i = 1; i<n; i++) {
-
-        for(int j = 0; j<n-i; j++) {  // Note here j is going till (n-i)th index, as in this sort largest value takes their correct place.
-            //process element till n-i th index
+    for(int i = 0; i<n-1; i++) {   
+        
+        for(int j = 0; j<n-i-1; j++) {  // Note here j is going till (n-i)th index, as in this sort largest value takes their correct place.
+            //process element till n-i-1 th index
             if(arr[j] > arr[j+1]) {
                 swap(arr[j], arr[j+1]);
             }
@@ -99,11 +102,10 @@ void bubbleSort(vector<int>& arr, int n) {
 
 // Optimized Code
 void bubbleSort(vector<int>& arr, int n) {   
-    for(int i = 1; i<n; i++) { 
-        //for round 1 to n-1 
+    for(int i = 0; i<n-1; i++) {
         bool swapped = false;
        
-        for(int j = 0; j<n-i; j++) { 
+        for(int j = 0; j<n-i-1; j++) { 
 
             //process element till n-i th index
             if(arr[j] > arr[j+1]) {
