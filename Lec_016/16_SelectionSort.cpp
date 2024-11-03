@@ -1,5 +1,8 @@
-// space complexity - O(1)
-// time complexity - O(n^2)
+// Question Link :- https://www.naukri.com/code360/problems/selection-sort_981162
+// Selection Sort
+
+// T.C = O(n^2)
+// S.C = O(1)
 // used for low size array
 
 /*
