@@ -1,4 +1,10 @@
+// Question Link :- https://www.naukri.com/code360/problems/quick-sort_983625
 // QUICK SORT (Recusively Implement) - STRIVER
+
+
+// Best Case: \omega (N * log N)
+// Average Case: \Theta (N * logN)
+// Worst Case: O(N2)
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -33,32 +39,3 @@ vector<int> quickSort(vector<int> arr) {
     qs(arr, 0, arr.size() - 1);
     return arr;
 }
-
-int main() {
-    vector<int> arr = {4, 6, 2, 5, 7, 9, 1, 3};
-    int n = arr.size();
-    cout << "Before Using quick Sort: " << endl;
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-
-    arr = quickSort(arr);
-    cout << "After Using quick sort: " << "\n";
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << "\n";
-    return 0;
-}
-
-// Output :-
-// Before Using quick Sort: 
-// 4 6 2 5 7 9 1 3 
-// After Using quick sort: 
-// 1 2 3 4 5 6 7 9 
-
-
-// Best Case: \omega (N * log N)
-// Average Case: \Theta (N * logN)
-// Worst Case: O(N2)
