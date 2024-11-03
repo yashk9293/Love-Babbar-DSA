@@ -1,5 +1,8 @@
-// space complexity - O(1)
-// time complexity - O(n^2)
+// Question Link :- https://www.naukri.com/code360/problems/insertion-sort_3155179
+// Insertion Sort
+
+// T.C = O(n^2)
+// S.C = O(1)
 
 // best case - already sorted    -> tc = O(n)
 // worst case - reverse sorted
@@ -10,6 +13,7 @@
 /*
 Round 1 :  1 < 10 -> left side
   i=1      10 -> left place
+            1th index -> 10 copy karde
             0th index -> 1 copy karde
 
 Round 2 :  1  10 | 7  4  8  2  11
@@ -32,53 +36,15 @@ Result ->  1  2  4  7  8  10  11
 */
 // n-1 round
 
-#include<vector>
-using namespace std;
-
+#include <bits/stdc++.h> 
 void insertionSort(int n, vector<int> &arr){
-    
-    for(int i = 1; i<n; i++) {
-        int temp = arr[i];
+    for(int i=1; i<n; i++) {
+        int key = arr[i];
         int j = i-1;
-        for(; j>=0; j--) {
-            
-            if(arr[j] > temp) {
-                //shift
-                arr[j+1] = arr[j];
-            }
-            else { // ruk jao
-                break;
-            }
-            
-        }
-        //copy temp value
-        arr[j+1] = temp;  
-    } 
-}
-
-
-
-
-//         i
-// 1  10 | 7  4  8  2  11
-
-// using while loop
-void insertionSort(int n, vector<int> &arr){
-    int i=1;
-    while(i<n){
-       int j=i-1;
-        int temp=arr[i];
-        while(j>=0){
-            if(arr[j]>temp) {
-                arr[j+1] = arr[j];
-            }
-            else {
-                break;
-            }
+        while(j>=0 && arr[j]>key) {
+            arr[j+1] = arr[j];
             j--;
         }
-        i++;
-        arr[j+1]=temp;
+        arr[j+1] = key;
     }
 }
-
