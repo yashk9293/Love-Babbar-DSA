@@ -4,7 +4,7 @@
 
 // Best Case: \omega (N * log N)
 // Average Case: \Theta (N * logN)
-// Worst Case: O(N2)
+// Worst Case: O(N^2)
 
 #include <bits/stdc++.h>
 using namespace std;
