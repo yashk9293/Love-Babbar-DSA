@@ -4,55 +4,55 @@
 // T.C = 4^(n x m)
 // S.C = O(m x n)
 
-// Solution - 1
-class Solution{
-    bool isSafe(int new_x, int new_y, vector<vector<int>> &arr, int n, vector<vector<bool>> &visited) {
-        if( ((new_x >= 0 && new_x < n) && (new_y >= 0 && new_y < n)) && (arr[new_x][new_y] == 1) && (visited[new_x][new_y] == 0)) {
-            return true;
-        }
-        return false;
-    }
-    void solve(int x, int y, vector<vector<int>> &arr, int n, vector<vector<bool>> &visited, string path, vector<string> &ans) {
-        // base case
-        if(x == n-1 && y == n-1) {
+// Approach 1 : Passing path as reference
+class Solution {
+  public:
+    void solve(int i, int j, int n, vector<vector<int>> &mat, vector<vector<bool>>& visited, string& path, vector<string>& ans) {
+        if(i == n-1 && j == n-1) {
             ans.push_back(path);
             return;
         }
-        
-        visited[x][y] = 1;
-        
-        // Down
-        if(isSafe(x+1, y, arr, n, visited)) {
-            solve(x+1, y, arr, n, visited, path + 'D', ans);
+        if (i < 0 || i >= n || j < 0 || j >= n || visited[i][j] || mat[i][j] == 0) {
+            return;
         }
         
-        // Left
-        if(isSafe(x, y-1, arr, n, visited)) {
-            solve(x, y-1, arr, n, visited, path + 'L', ans);
-        }
+        visited[i][j] = true;
+
+        // Move Down
+        path.push_back('D');
+        solve(i + 1, j, n, mat, visited, path, ans);
+        path.pop_back(); // Backtrack
         
-        // Right
-        if(isSafe(x, y+1, arr, n, visited)) {
-            solve(x, y+1, arr, n, visited, path + 'R', ans);
-        }
-        
-        // Up
-        if(isSafe(x-1, y, arr, n, visited)) {
-            solve(x-1, y, arr, n, visited, path + 'U', ans);
-        }
-        visited[x][y] = 0;
+        // Move Left
+        path.push_back('L');
+        solve(i, j - 1, n, mat, visited, path, ans);
+        path.pop_back(); // Backtrack
+
+        // Move Right
+        path.push_back('R');
+        solve(i, j + 1, n, mat, visited, path, ans);
+        path.pop_back(); // Backtrack
+
+        // Move Up
+        path.push_back('U');
+        solve(i - 1, j, n, mat, visited, path, ans);
+        path.pop_back(); // Backtrack
+
+        visited[i][j] = false;
     }
-    
-    public:
-    vector<string> findPath(vector<vector<int>> &m, int n) {
+
+    vector<string> findPath(vector<vector<int>> &mat) {
+        int n = mat.size();
         vector<string> ans;
-        vector<vector<bool>> visited(n, vector<bool> (n,0));
-        string path = "";
+        string path;
+        vector<vector<bool>> visited(n, vector<bool> (n, 0));
         
-        // EDGE CASE
-        if(m[0][0] == 1) {
-            solve(0, 0, m, n, visited, path, ans);
+        if (mat[0][0] == 0 || mat[n - 1][n - 1] == 0) {
+            return {};
         }
+
+        solve(0, 0, n, mat, visited, path, ans);
+        
         return ans;
     }
 };
@@ -63,45 +63,42 @@ class Solution{
 
 
 
-// Solution - 2
-class Solution{
-    bool isSafe(int new_x, int new_y, vector<vector<int>> &arr, int n, vector<vector<bool>> &visited) {
-        if( ((new_x >= 0 && new_x < n) && (new_y >= 0 && new_y < n)) && (arr[new_x][new_y] == 1) && (visited[new_x][new_y] != 1)) {
-            return true;
-        }
-        return false;
-    }
-    void solve(int x, int y, vector<vector<int>> &arr, int n, vector<vector<bool>> &visited, string path, vector<string> &ans) {
-        // base case
-        if(x == n-1 && y == n-1) {
+// Approach 2 : Passing path as value, it store copies of itself in each recursive call
+class Solution {
+  public:
+    vector<vector<int>> directions{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+    
+    void solve(int i, int j, int n, vector<vector<int>> &mat, vector<vector<bool>>& visited, string path, vector<string>& ans) {
+        if(i == n-1 && j == n-1) {
             ans.push_back(path);
             return;
         }
-        
-        visited[x][y] = 1;
-        
-        int newx[4] = {x+1, x, x, x-1};
-        int newy[4] = {y, y-1, y+1, y};
-        string movement = "DLRU";
-        
-        for(int i = 0; i < 4; i++) {
-            if(isSafe(newx[i], newy[i], arr, n, visited)) {
-                solve(newx[i], newy[i], arr, n, visited, path + movement[i], ans);
-            }
+        if (i < 0 || i >= n || j < 0 || j >= n || visited[i][j] || mat[i][j] == 0) {
+            return;
         }
-        visited[x][y] = 0;
+        
+        visited[i][j] = true;
+
+        solve(i + 1, j, n, mat, visited, path + 'D', ans);
+        solve(i, j - 1, n, mat, visited, path + 'L', ans);
+        solve(i, j + 1, n, mat, visited, path + 'R', ans);
+        solve(i - 1, j, n, mat, visited, path + 'U', ans);
+
+        visited[i][j] = false;
     }
-    
-    public:
-    vector<string> findPath(vector<vector<int>> &m, int n) {
+
+    vector<string> findPath(vector<vector<int>> &mat) {
+        int n = mat.size();
         vector<string> ans;
-        vector<vector<bool>> visited(n, vector<bool> (n,0));
-        string path = "";
+        string path;
+        vector<vector<bool>> visited(n, vector<bool> (n, 0));
         
-        // EDGE CASE
-        if(m[0][0] == 1) {
-            solve(0, 0, m, n, visited, path, ans);
+        if (mat[0][0] == 0 || mat[n - 1][n - 1] == 0) {
+            return {};
         }
+
+        solve(0, 0, n, mat, visited, path, ans);
+        
         return ans;
     }
 };
