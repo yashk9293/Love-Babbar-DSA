@@ -1,64 +1,64 @@
-// Implementation of Stack using array
+// Question Link :- https://www.naukri.com/code360/problems/stack-implementation-using-array_3210209
+// Stack Implementation Using Array
+
+// T.C = O(N)
+// S.C = O(N)
 
 #include<iostream>
 #include<stack>
 using namespace std;
 
 class Stack {
-    //properties
-    public:
-        int *arr;
-        int top;
-        int size;
+private:
+    int *arr;        // Dynamic array to store stack elements
+    int topIndex;    // Index of the top element
+    int capacity; 
 
-    // behaviour
-    Stack(int size) {
-        this -> size = size;
-        arr = new int[size];
-        top = -1;
+public:
+    Stack(int capacity) {
+        this->capacity = capacity;
+        arr = new int[capacity];
+        topIndex = -1;
     }
 
-    //O(1)
-    void push( int element) {
-        if(size - top > 1) {
-            top++;
-            arr[top] = element;
+    void push(int num) {
+        if (isFull()) {
+            return;
         }
-        else {
-            cout << "Stack OverFlow" << endl;
-        }
+        topIndex++;
+        arr[topIndex] = num;
     }
 
-    //O(1)
-    void pop() {
-        if(top >=0 ) {
-            top--;
-        }
-        else {
-            cout << "Stack UnderFlow" << endl;
-        }
-    }
-
-    //O(1)
-    int peek() {
-        if(top >=0 )
-            return arr[top];
-        else {
-            cout << "Stack is Empty" << endl;
+    int pop() {
+        if (isEmpty()) {
             return -1;
         }
+        int topElement = arr[topIndex];
+        topIndex--;
+        return topElement;
     }
 
-    //O(1)
-    bool isEmpty() {
-        if( top == -1) {
-            return true;
+    int top() {
+        if (isEmpty()) {
+            return -1;
         }
-        else {
-            return false;
-        }
+        return arr[topIndex];
+    }
+
+    int isEmpty() {
+        return topIndex == -1;
+    }
+
+    int isFull() {
+        return topIndex == capacity - 1;
+    }
+
+    ~Stack() {
+        delete[] arr;
     }
 };
+
+
 
 int main() {
     Stack st(5);
@@ -70,13 +70,13 @@ int main() {
     st.push(43);
     st.push(44);
 
-    cout << st.peek() << endl;
+    cout << st.top() << endl;
     st.pop();
-    cout << st.peek() << endl;
+    cout << st.top() << endl;
     st.pop();
-    cout << st.peek() << endl;
+    cout << st.top() << endl;
     st.pop();
-    cout << st.peek() << endl;
+    cout << st.top() << endl;
 
     if(st.isEmpty()) {
         cout << "Stack is Empty mere dost " << endl;
@@ -91,9 +91,61 @@ int main() {
 
 // Output :-
 
-// Stack OverFlow
 // 43
 // 22
 // 44
 // 43
-// Stack is not Empty mere dost 
+// Stack is not Empty mere dost
+
+
+
+
+
+
+
+// Approach - 2
+// Using vectors
+class Stack {
+    vector<int> arr;
+    int capacity;
+    
+public:
+    
+    Stack(int capacity) {
+        this->capacity = capacity;
+    }
+
+    void push(int num) {
+        if(isFull()) {
+            return;
+        }
+        arr.push_back(num);
+    }
+
+    int pop() {
+        if(isEmpty()) {
+            return -1;
+        }
+        int topElement = arr.back();
+        arr.pop_back();
+        return topElement;
+    }
+    
+    int top() {
+        if (isEmpty()) {
+            return -1;
+        }
+        return arr.back();
+    }
+    
+    int isEmpty() {
+        return arr.empty();
+    }
+    
+    int isFull() {
+        if(arr.size() == capacity) {
+            return 1;
+        }
+        return 0;
+    }
+};
