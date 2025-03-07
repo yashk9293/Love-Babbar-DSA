@@ -1,105 +1,111 @@
 // Question Link :- https://practice.geeksforgeeks.org/problems/the-celebrity-problem/1
 // The Celebrity Problem
 
+// Brute Force
+// T.C = O(N^2)
+// S.C = O(N)
+class Solution {
+public:
+    int celebrity(vector<vector<int>> &mat) {
+        int n = mat.size();
+        vector<int> you_know_me(n, 0);
+        vector<int> i_know_you(n, 0);
 
-// Approach - 1
-// T.C. = O(n)
-// S.C. = O(n)
-class Solution  {
-    private:
-    bool knows(vector<vector<int> >& M, int a, int b, int n) {
-        if(M[a][b] == 1)
-            return true;
-        else
-            return false;
-    }
-    
-    public:
-    //Function to find if there is a celebrity in the party or not.
-    int celebrity(vector<vector<int> >& M, int n)  {
-        stack<int> s;
-        //step1: push all element in stack
-        for(int i=0; i<n; i++) {
-            s.push(i);
-        }   
-        
-        //step2: get 2 elements and copare them
-        
-        while(s.size() > 1) {
-            int a = s.top();
-            s.pop();
-            
-            int b = s.top();
-            s.pop();
-            
-            if(knows(M, a, b, n)){
-                s.push(b);
-            }
-            else {
-                s.push(a);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == j) {
+                    continue;
+                }
+                if (mat[i][j] == 1) {
+                    i_know_you[i]++;
+                    you_know_me[j]++;
+                }
             }
         }
-        int ans = s.top();
-        //step3: single element in stack is potential celebrity
-        //so verify it
-        
-        int zeroCount = 0;
-        
-        for(int i=0; i<n; i++) {
-            if(M[ans][i] == 0)
-                zeroCount++;
+
+        for (int i = 0; i < n; i++) {
+            if (you_know_me[i] == n - 1 && i_know_you[i] == 0) {
+                return i;
+            }
         }
-        //all zeroes
-        if(zeroCount != n)
-            return -1;
-        
-        //column check
-        int oneCount = 0;
-        
-        for(int i=0; i<n; i++) {
-            if(M[i][ans] == 1)
-                oneCount++;
-        }
-        
-        if(oneCount != n-1)
-            return -1;
-        
-        return ans;
+        return -1;
     }
 };
 
 
 
+// Optimized Approach (Using Stack)
+// T.C = O(N)
+// S.C = O(N)
+class Solution {
+public:
+    int celebrity(vector<vector<int>> &mat) {
+        int n = mat.size();
+        stack<int> st;
+        for (int i = 0; i < n; i++) {
+            st.push(i);
+        }
 
+        while (st.size() > 1) {
+            int x = st.top();
+            st.pop();
+            int y = st.top();
+            st.pop();
 
-// Approach - 2
-// T.C. = O(n)
-// S.C. = O(1)
-class Solution  {
-    public:
-    //Function to find if there is a celebrity in the party or not.
-    int celebrity(vector<vector<int> >& M, int n) {
-        int start =0, end = n-1;
-        
-        while(start<end) {
-            if(M[start][end]==0) {
-                end--;
-            }
-            else {
-                start++;
+            if (mat[x][y] == 0) {
+                st.push(x);
+            } else {
+                st.push(y);
             }
         }
-        int candidate = start;
-        
-        int zeroCount=0;
-        for(int i=0; i<n; i++){
-            if(M[candidate][i] != 0) {
-                return -1;
+
+        int celebrity = st.top();
+
+        for (int i = 0; i < n; i++) {
+            if (i == celebrity) {
+                continue;
             }
-            if(i != start && M[i][candidate] != 1) {
+            // now check when it is -1
+            // mtlb agar celebrity kisko jaanta ho to wo return -1 aur maan lo koi celebrity ko na jaanata ho phir bhi -1
+            if (mat[celebrity][i] == 1 || mat[i][celebrity] == 0) {
                 return -1;
             }
         }
-        return candidate;
+        return celebrity;
+    }
+};
+
+
+
+// Optimal Solution
+// T.C = O(N)
+// S.C = O(1)
+class Solution {
+public:
+    int celebrity(vector<vector<int>> &mat) {
+        int n = mat.size();
+        int top = 0, down = n - 1;
+
+        while (top < down) {
+            if (mat[top][down] == 1) {
+                top++;
+            } else {
+                down--;
+            }
+        }
+
+        if (top != down) {
+            return -1;
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (i == top) {
+                continue;
+            }
+            if (mat[top][i] == 1 || mat[i][top] == 0) {
+                return -1;
+            }
+        }
+        return top;
     }
 };
